@@ -78,7 +78,7 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys) ++
-  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts myXPromptConf{ defaultPrompter = const "System: " })) <$> mySystemKeys) ++
+  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 })) <$> mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs) ++
   [ ((myModMask, key), windows $ S.greedyView ws)
     | (key,ws) <- myWorkspaces
