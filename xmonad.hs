@@ -8,7 +8,7 @@ import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
 
-import XMonad.Prompt (defaultPrompter)
+import XMonad.Prompt
 import XMonad.Prompt.XMonad
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
 
@@ -53,9 +53,9 @@ myKeys conf = Map.fromList $
   , ((myModMask, xK_comma ), sendMessage $ IncMasterN (-1))
   , ((myModMask, xK_period), sendMessage $ IncMasterN   1 )
   , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-  , ((myModMask, xK_g     ), windowPrompt def Goto allWindows)
-  , ((myModMask, xK_b     ), windowPrompt def Bring allWindows)
-  , ((myModMask, xK_x     ), xmonadPrompt def)
+  , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto allWindows)
+  , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
+  , ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
 
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
@@ -69,12 +69,12 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_Down  ), sendMessage MirrorExpand)
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
 
-  , ((myModMask .|. altMask, xK_Up  ), spawn "~/.utils/backlight/backlight.sh 1")
-  , ((myModMask .|. altMask, xK_Down), spawn "~/.utils/backlight/backlight.sh 0")
+  , ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
+  , ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
+  , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
-  ((\(key,layout) -> ((myModMask .|. altMask, key), spawn $ "~/.screenlayout/" <> layout <> ".sh; " <> myXMonadRestart)) <$> myScreenLayouts) ++
   ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys) ++
-  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts def{ defaultPrompter = const "System: " })) <$> mySystemKeys) ++
+  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts myXPromptConf{ defaultPrompter = const "System: " })) <$> mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs) ++
   [ ((myModMask, key), windows $ S.greedyView ws)
     | (key,ws) <- myWorkspaces
@@ -83,12 +83,7 @@ myKeys conf = Map.fromList $
     | (key,ws) <- myWorkspaces
   ]
 
--- TODO replace with prompt
-myScreenLayouts = 
-  [ (xK_m, "main")
-  , (xK_h, "home")
-  , (xK_w, "work")
-  ]
+myScreenLayouts = (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
 
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
@@ -149,6 +144,11 @@ mySysPromptOpts  =
   , ( "Reboot"       , spawn "systemctl reboot")
   , ( "Poweroff"     , spawn "systemctl poweroff")
   ]
+myXPromptConf    = def
+  { font         = "xft:Droid Sans Mono-10:antialias=true"
+  , height       = 25
+  , historySize  = 0
+  }
 
 -- convenience defs
 altMask = mod1Mask
