@@ -38,7 +38,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks
-    , startupHook = mapM_ spawn myStartupApplications
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf) >> mapM_ spawn myStartupApplications
     }
 
 myKeys conf = Map.fromList $
@@ -86,13 +86,12 @@ myScreenLayouts =
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
-  [ "stalonetray"
-  , "nm-applet"
+  [ "nm-applet"
   , "blueman-applet"
   , "volumeicon"
   , "pamac-tray"
-  , "keepassxc"
-  , "megasync"
+--, "keepassxc"
+--, "megasync"
   ]
 
 -- frequently used applications
@@ -114,23 +113,26 @@ myPP = xmobarPP
   }
 
 -- auxiliary defs
-myModMask       = mod4Mask   -- Mod == Super
-myFUAMask       = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
-myMainColor     = "#0084ff"
-myUrgentColor   = "#ff0000"
-myLayouts       =   ThreeCol nMaster delta frac
-                ||| Mirror (ThreeCol nMaster delta frac)
-                ||| Tall nMaster delta frac
-                ||| Mirror (Tall nMaster delta frac)
-                -- ||| ResizableTall nMaster delta frac [1]
-                ||| spiral (6/7)
-                ||| Full
-                where
-                  nMaster = 1
-                  delta   = 3/100
-                  frac    = 1/2
-myXMonadRestart = concatMap (\app -> "killall " <> app <> "; ") myStartupApplications <> "killall xmobar; xmonad --restart"
+myModMask        = mod4Mask   -- Mod == Super
+myFUAMask        = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
+myMainColor      = "#0084ff"
+myUrgentColor    = "#ff0000"
+myLayouts        =   ThreeCol nMaster delta frac
+                 ||| Mirror (ThreeCol nMaster delta frac)
+                 ||| Tall nMaster delta frac
+                 ||| Mirror (Tall nMaster delta frac)
+                 -- ||| ResizableTall nMaster delta frac [1]
+                 ||| spiral (6/7)
+                 ||| Full
+                 where
+                   nMaster = 1
+                   delta   = 3/100
+                   frac    = 1/2
+--myXMonadRestart = concatMap (\app -> "killall " <> app <> "; ") myStartupApplications <> "killall xmobar; xmonad --restart"
+myXMonadRestart  = (concatMap (\app -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
 myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
+mySystemTray     = "stalonetray"
+mySysTrayConf    = "~/.xmonad/stalonetrayrc"
 
 altMask = mod1Mask
 
