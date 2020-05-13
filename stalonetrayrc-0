@@ -4,8 +4,8 @@ dockapp_mode none
 geometry 8x1-0+0
 background "#000000"
 kludges force_icons_size
-grow_gravity NE
-icon_gravity NE
+grow_gravity NW
+icon_gravity NW
 icon_size 16
 sticky true
 window_type dock
