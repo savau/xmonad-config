@@ -3,22 +3,26 @@ import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 
+import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
 
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.SpawnOnce (spawnOnce)
 
 import qualified XMonad.StackSet as S
 
+import Control.Monad (forM)
 import qualified Data.Map as Map (fromList)
 import System.Exit
 import System.IO
 
 
 main = do
-  xmproc <- spawnPipe $ "xmobar " ++ myXMobarConfig
+  nScreens <- countScreens
+  xmprocs  <- sequence $ (\n -> spawnPipe $ "xmobar " <> myXMobarConfig <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
     --, focusFollowsMouse  = False
@@ -31,7 +35,7 @@ main = do
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
     , logHook     = dynamicLogWithPP myPP
-      { ppOutput = hPutStrLn xmproc
+      { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks
     , startupHook = mapM_ spawn myStartupApplications
@@ -124,7 +128,7 @@ myLayouts       =   ThreeCol nMaster delta frac
                   nMaster = 1
                   delta   = 3/100
                   frac    = 1/2
-myXMonadRestart = concatMap (\app -> "killall " <> app <> ";") myStartupApplications <> "xmonad --restart"
+myXMonadRestart = concatMap (\app -> "killall " <> app <> "; ") myStartupApplications <> "killall xmobar; xmonad --restart"
 myXMobarConfig  = "~/.xmonad/xmobar-dual.hs"
 
 altMask = mod1Mask
