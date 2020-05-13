@@ -24,7 +24,11 @@ import System.Exit
 import System.IO
 
 
+myXMonadDir = "~/.xmonad/"
+
+
 main = do
+  spawn "autorandr --change"
   nScreens <- countScreens
   xmprocs  <- sequence $ (\n -> spawnPipe $ "xmobar " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
@@ -42,7 +46,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf) >> mapM_ (\(app,opts) -> spawn $ app <> " " <> opts) myStartupApplications
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(app,opts) -> spawn $ app <> " " <> opts) myStartupApplications
     }
 
 myKeys conf = Map.fromList $
@@ -132,9 +136,9 @@ myLayouts        =   ThreeCol nMaster delta frac
                    delta   = 3/100
                    frac    = 1/2
 myXMonadRestart  = (concatMap (\(app,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
-myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
+myXMobarConfig n = myXMonadDir <> "xmobar-" <> show n <> ".hs"
 mySystemTray     = "stalonetray"
-mySysTrayConf    = "~/.xmonad/stalonetrayrc"
+mySysTrayConf n  = myXMonadDir <> "stalonetrayrc-" <> show n
 mySystemKeys     = [xK_equal]  -- TODO add dead_acute
 mySysPromptOpts  =
   [ ( "Logout"       , io $ exitWith ExitSuccess)
