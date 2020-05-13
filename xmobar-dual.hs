@@ -14,7 +14,7 @@ Config
   , borderColor      = "black"
   , borderWidth      = 0
   , alpha            = 255
-  , hideOnStart      = True
+  , hideOnStart      = False
   , allDesktops      = True
   , overrideRedirect = True   -- ^ Needed for dock behaviour in some non-tiling WMs
   , pickBroadest     = False  -- ^ Use the broadest display instead of the first one
