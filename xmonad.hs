@@ -38,7 +38,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf) >> mapM_ spawn myStartupApplications
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf) >> mapM_ (\(app,opts) -> spawn $ app <> " " <> opts) myStartupApplications
     }
 
 myKeys conf = Map.fromList $
@@ -86,11 +86,12 @@ myScreenLayouts =
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
-  [ "nm-applet"
-  , "blueman-applet"
-  , "volumeicon"
-  , "pamac-tray"
---, "keepassxc"
+  [ ("xscreensaver"   , "-no-splash")
+  , ("nm-applet"      , mempty)
+  , ("blueman-applet" , mempty)
+  , ("volumeicon"     , mempty)
+  , ("pamac-tray"     , mempty)
+  , ("keepassxc"      , mempty)
 --, "megasync"
   ]
 
@@ -128,8 +129,7 @@ myLayouts        =   ThreeCol nMaster delta frac
                    nMaster = 1
                    delta   = 3/100
                    frac    = 1/2
---myXMonadRestart = concatMap (\app -> "killall " <> app <> "; ") myStartupApplications <> "killall xmobar; xmonad --restart"
-myXMonadRestart  = (concatMap (\app -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
+myXMonadRestart  = (concatMap (\(app,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
 myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
 mySystemTray     = "stalonetray"
 mySysTrayConf    = "~/.xmonad/stalonetrayrc"
