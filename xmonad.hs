@@ -8,6 +8,10 @@ import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
 
+import XMonad.Prompt (defaultPrompter)
+import XMonad.Prompt.XMonad
+import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
+
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
@@ -49,6 +53,9 @@ myKeys conf = Map.fromList $
   , ((myModMask, xK_comma ), sendMessage $ IncMasterN (-1))
   , ((myModMask, xK_period), sendMessage $ IncMasterN   1 )
   , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+  , ((myModMask, xK_g     ), windowPrompt def Goto allWindows)
+  , ((myModMask, xK_b     ), windowPrompt def Bring allWindows)
+  , ((myModMask, xK_x     ), xmonadPrompt def)
 
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
@@ -61,13 +68,13 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_Up    ), sendMessage MirrorShrink)
   , ((myModMask .|. controlMask, xK_Down  ), sendMessage MirrorExpand)
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
-  , ((myModMask .|. controlMask, xK_q     ), io $ exitWith ExitSuccess)
 
   , ((myModMask .|. altMask, xK_Up  ), spawn "~/.utils/backlight/backlight.sh 1")
   , ((myModMask .|. altMask, xK_Down), spawn "~/.utils/backlight/backlight.sh 0")
   ] ++
   ((\(key,layout) -> ((myModMask .|. altMask, key), spawn $ "~/.screenlayout/" <> layout <> ".sh; " <> myXMonadRestart)) <$> myScreenLayouts) ++
   ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys) ++
+  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts def{ defaultPrompter = const "System: " })) <$> mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs) ++
   [ ((myModMask, key), windows $ S.greedyView ws)
     | (key,ws) <- myWorkspaces
@@ -76,6 +83,7 @@ myKeys conf = Map.fromList $
     | (key,ws) <- myWorkspaces
   ]
 
+-- TODO replace with prompt
 myScreenLayouts = 
   [ (xK_m, "main")
   , (xK_h, "home")
@@ -132,6 +140,15 @@ myXMonadRestart  = (concatMap (\(app,_) -> "killall " <> app <> "; ") myStartupA
 myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
 mySystemTray     = "stalonetray"
 mySysTrayConf    = "~/.xmonad/stalonetrayrc"
+mySystemKeys     = [xK_equal]  -- TODO add dead_acute
+mySysPromptOpts  =
+  [ ( "Logout"       , io $ exitWith ExitSuccess)
+  , ( "Suspend"      , spawn "systemctl suspend")
+  , ( "Hibernate"    , spawn "systemctl hibernate")
+  , ( "Hybrid-sleep" , spawn "systemctl hybrid-sleep")
+  , ( "Reboot"       , spawn "systemctl reboot")
+  , ( "Poweroff"     , spawn "systemctl poweroff")
+  ]
 
 -- convenience defs
 altMask = mod1Mask
