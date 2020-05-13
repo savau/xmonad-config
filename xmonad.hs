@@ -42,9 +42,7 @@ main = do
     }
 
 myKeys conf = Map.fromList $
-  [
-  -- basics
-    ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
+  [ ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows S.focusDown)
   , ((myModMask, xK_Up    ), windows S.focusUp)
@@ -54,7 +52,8 @@ myKeys conf = Map.fromList $
 
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
-  , ((myModMask .|. shiftMask, xK_space), sendMessage NextLayout)
+  , ((myModMask .|. shiftMask, xK_Left ), sendMessage FirstLayout)
+  , ((myModMask .|. shiftMask, xK_Right), sendMessage NextLayout)
 
   , ((myModMask .|. controlMask, xK_space ), setLayout $ layoutHook conf)
   , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
@@ -134,6 +133,5 @@ myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
 mySystemTray     = "stalonetray"
 mySysTrayConf    = "~/.xmonad/stalonetrayrc"
 
+-- convenience defs
 altMask = mod1Mask
-
-toggleStrutsKey XConfig{XMonad.modMask = modMask} = (modMask .|. controlMask, xK_b)
