@@ -1,22 +1,28 @@
 Config
-  { 
+  {
     font             = "xft:Droid Sans Mono-8:antialias=true"
-  , additionalFonts  = []
-  , borderColor      = "black"
-  , border           = TopB
+  , additionalFonts  = []     -- ^ List of alternative fonts
+--, wmClass :: String         -- ^ X11 WM_CLASS property value
+--, wmName  :: String         -- ^ X11 WM_NAME property value
   , bgColor          = "black"
   , fgColor          = "grey"
-  , alpha            = 255
-  , position         = Static { xpos = 0, ypos = 0, width = 1790, height = 20 },
+  , position         = Static { xpos = 0, ypos = 0, width = 1790, height = 20 }
   , textOffset       = -1
+  , textOffsets      = []     -- ^ List of offsets for additionalFonts
   , iconOffset       = -1
-  , lowerOnStart     = True
-  , pickBroadest     = False
-  , persistent       = False
-  , hideOnStart      = False
-  , iconRoot         = "."
+  , border           = TopB
+  , borderColor      = "black"
+  , borderWidth      = 0
+  , alpha            = 255
+  , hideOnStart      = True
   , allDesktops      = True
-  , overrideRedirect = True
+  , overrideRedirect = True   -- ^ Needed for dock behaviour in some non-tiling WMs
+  , pickBroadest     = False  -- ^ Use the broadest display instead of the first one
+                              --   by default
+  , lowerOnStart     = True   -- ^ Lower to the bottom of the window stack 
+                              --   on initialization
+  , persistent       = False  -- ^ Toggle automatic hiding
+  , iconRoot         = "."
   , commands         =
     [ 
       Run Weather "EDDM"
@@ -83,4 +89,5 @@ Config
   , sepChar          = "%"
   , alignSep         = "}{"
   , template         = "%StdinReader% }{ %multicpu% - %coretemp% | %memory% - %swap% | %dynnetwork% - %wlp0s20f3wi% | %battery% | %uname%    %EDDM% | <fc=#ffffff>%date%</fc> | "
+  , verbose          = False  -- ^ Emit additional debug messages
   }
