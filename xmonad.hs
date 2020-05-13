@@ -22,7 +22,7 @@ import System.IO
 
 main = do
   nScreens <- countScreens
-  xmprocs  <- sequence $ (\n -> spawnPipe $ "xmobar " <> myXMobarConfig <> " --screen " <> show n) <$> [0..pred nScreens]
+  xmprocs  <- sequence $ (\n -> spawnPipe $ "xmobar " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
     --, focusFollowsMouse  = False
@@ -130,7 +130,7 @@ myLayouts       =   ThreeCol nMaster delta frac
                   delta   = 3/100
                   frac    = 1/2
 myXMonadRestart = concatMap (\app -> "killall " <> app <> "; ") myStartupApplications <> "killall xmobar; xmonad --restart"
-myXMobarConfig  = "~/.xmonad/xmobar-dual.hs"
+myXMobarConfig n = "~/.xmonad/xmobar-dual-" <> show n <> ".hs"
 
 altMask = mod1Mask
 
