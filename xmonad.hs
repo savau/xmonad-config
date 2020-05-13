@@ -57,10 +57,10 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. shiftMask, xK_space), sendMessage NextLayout)
 
   , ((myModMask .|. controlMask, xK_space ), setLayout $ layoutHook conf)
-  , ((myModMask .|. controlMask, xK_Left  ), sendMessage Expand)
-  , ((myModMask .|. controlMask, xK_Right ), sendMessage Shrink)
-  , ((myModMask .|. controlMask, xK_Up    ), sendMessage MirrorExpand)
-  , ((myModMask .|. controlMask, xK_Down  ), sendMessage MirrorShrink)
+  , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
+  , ((myModMask .|. controlMask, xK_Right ), sendMessage Expand)
+  , ((myModMask .|. controlMask, xK_Up    ), sendMessage MirrorShrink)
+  , ((myModMask .|. controlMask, xK_Down  ), sendMessage MirrorExpand)
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
   , ((myModMask .|. controlMask, xK_q     ), io $ exitWith ExitSuccess)
 
@@ -86,13 +86,13 @@ myScreenLayouts =
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
-  [ "nm-applet"
+  [ "stalonetray"
+  , "nm-applet"
   , "blueman-applet"
   , "volumeicon"
   , "pamac-tray"
   , "keepassxc"
   , "megasync"
-  , "stalonetray"
   ]
 
 -- frequently used applications
@@ -119,6 +119,7 @@ myFUAMask       = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 myMainColor     = "#0084ff"
 myUrgentColor   = "#ff0000"
 myLayouts       =   ThreeCol nMaster delta frac
+                ||| Mirror (ThreeCol nMaster delta frac)
                 ||| Tall nMaster delta frac
                 ||| Mirror (Tall nMaster delta frac)
                 -- ||| ResizableTall nMaster delta frac [1]
