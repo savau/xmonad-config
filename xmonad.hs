@@ -141,12 +141,12 @@ mySystemTray     = "stalonetray"
 mySysTrayConf n  = myXMonadDir <> "stalonetrayrc-" <> show n
 mySystemKeys     = [xK_equal]  -- TODO add dead_acute
 mySysPromptOpts  =
-  [ ( "Logout"       , io $ exitWith ExitSuccess)
-  , ( "Suspend"      , spawn "systemctl suspend")
-  , ( "Hibernate"    , spawn "systemctl hibernate")
-  , ( "Hybrid-sleep" , spawn "systemctl hybrid-sleep")
-  , ( "Reboot"       , spawn "systemctl reboot")
-  , ( "Poweroff"     , spawn "systemctl poweroff")
+  [ ( "logout"       , io $ exitWith ExitSuccess)
+  , ( "suspend"      , spawn "systemctl suspend")
+  , ( "hibernate"    , spawn "systemctl hibernate")
+  , ( "hybrid-sleep" , spawn "systemctl hybrid-sleep")
+  , ( "reboot"       , spawn "systemctl reboot")
+  , ( "poweroff"     , spawn "systemctl poweroff")
   ]
 myXPromptConf    = def
   { font         = "xft:Droid Sans Mono-10:antialias=true"
