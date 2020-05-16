@@ -98,7 +98,7 @@ myStartupApplications =
   , ("volumeicon"     , mempty)
   , ("pamac-tray"     , mempty)
   , ("keepassxc"      , mempty)
---, "megasync"
+  , ("megasync"       , mempty)
   ]
 
 -- frequently used applications
