@@ -59,7 +59,8 @@ myKeys conf = Map.fromList $
   , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
   , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto allWindows)
   , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
-  , ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
+--, ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
+  , ((myModMask, xK_t     ), withFocused $ windows . S.sink)
 
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
@@ -103,12 +104,13 @@ myStartupApplications =
 
 -- frequently used applications
 myFUAs =
-  [ (xK_f, "pcmanfm"    )  -- file manager
-  , (xK_k, "keepassxc"  )  -- password manager
-  , (xK_w, "firefox"    )  -- web browser
-  , (xK_m, "thunderbird")  -- mail client
-  , (xK_c, "zulip"      )  -- chat client
-  , (xK_t, "texstudio"  )  -- tex editor
+  [ (xK_f, "pcmanfm"             )  -- file manager
+  , (xK_k, "keepassxc"           )  -- password manager
+  , (xK_w, "firefox"             )  -- web browser
+  , (xK_m, "thunderbird"         )  -- mail client
+  , (xK_c, "zulip"               )  -- chat client
+  , (xK_s, "signal-desktop-beta" )  -- messenger client
+  , (xK_t, "texstudio"           )  -- tex editor
   ]
 
 myWorkspaces = zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
@@ -124,10 +126,11 @@ myModMask        = mod4Mask   -- Mod == Super
 myFUAMask        = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 myMainColor      = "#0084ff"
 myUrgentColor    = "#ff0000"
-myLayouts        =   ThreeCol nMaster delta frac
-                 ||| Mirror (ThreeCol nMaster delta frac)
-                 ||| Tall nMaster delta frac
+myLayouts        = 
+                     Tall nMaster delta frac
                  ||| Mirror (Tall nMaster delta frac)
+                 ||| ThreeCol nMaster delta frac
+                 ||| Mirror (ThreeCol nMaster delta frac)
                  -- ||| ResizableTall nMaster delta frac [1]
                  ||| spiral (6/7)
                  ||| Full
@@ -141,12 +144,11 @@ mySystemTray     = "stalonetray"
 mySysTrayConf n  = myXMonadDir <> "stalonetrayrc-" <> show n
 mySystemKeys     = [xK_equal]  -- TODO add dead_acute
 mySysPromptOpts  =
-  [ ( "logout"       , io $ exitWith ExitSuccess)
-  , ( "suspend"      , spawn "systemctl suspend")
-  , ( "hibernate"    , spawn "systemctl hibernate")
-  , ( "hybrid-sleep" , spawn "systemctl hybrid-sleep")
-  , ( "reboot"       , spawn "systemctl reboot")
-  , ( "poweroff"     , spawn "systemctl poweroff")
+  [ ( "Logout"       , io $ exitWith ExitSuccess)
+  , ( "Suspend"      , spawn "systemctl suspend")
+  , ( "Hibernate"    , spawn "systemctl hibernate")
+  , ( "Reboot"       , spawn "systemctl reboot")
+  , ( "Poweroff"     , spawn "systemctl poweroff")
   ]
 myXPromptConf    = def
   { font         = "xft:Droid Sans Mono-10:antialias=true"
