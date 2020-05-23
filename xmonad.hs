@@ -1,6 +1,6 @@
 import XMonad
 
-import XMonad.Actions.SpawnOn (spawnOn)
+import XMonad.Actions.SpawnOn (manageSpawn, spawnOn)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -48,7 +48,7 @@ main = do
     , logHook     = dynamicLogWithPP myPP
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
-    , manageHook  = manageHook def <+> manageDocks
+    , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
     , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications
     }
     where
@@ -107,7 +107,7 @@ myStartupApplications =
   , ("megasync"            , mempty       , mempty    )
   , ("thunderbird"         , mempty       , Just "10" )
   , ("zulip"               , mempty       , Just "9"  )
-  , ("signal-desktop-beta" , mempty       , Just "8"  )
+--, ("signal-desktop-beta" , mempty       , Just "8"  )
   ]
 
 -- frequently used applications
