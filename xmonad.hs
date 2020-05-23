@@ -1,5 +1,7 @@
 import XMonad
 
+import XMonad.Actions.SpawnOn (spawnOn)
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 
@@ -19,6 +21,7 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 import qualified XMonad.StackSet as S
 
 import Control.Monad (forM)
+import Data.List (intercalate)
 import qualified Data.Map as Map (fromList)
 import System.Exit
 import System.IO
@@ -46,8 +49,10 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(app,opts) -> spawn $ app <> " " <> opts) myStartupApplications
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications
     }
+    where
+      startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " [app,opts]
 
 myKeys conf = Map.fromList $
   [ ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -93,13 +98,16 @@ myScreenLayouts = (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> my
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
-  [ ("xscreensaver"   , "-no-splash")
-  , ("nm-applet"      , mempty)
-  , ("blueman-applet" , mempty)
-  , ("volumeicon"     , mempty)
-  , ("pamac-tray"     , mempty)
-  , ("keepassxc"      , mempty)
-  , ("megasync"       , mempty)
+  [ ("xscreensaver"        , "-no-splash" , mempty    )
+  , ("nm-applet"           , mempty       , mempty    )
+  , ("blueman-applet"      , mempty       , mempty    )
+  , ("volumeicon"          , mempty       , mempty    )
+  , ("pamac-tray"          , mempty       , mempty    )
+  , ("keepassxc"           , mempty       , mempty    )
+  , ("megasync"            , mempty       , mempty    )
+  , ("thunderbird"         , mempty       , Just "10" )
+  , ("zulip"               , mempty       , Just "9"  )
+  , ("signal-desktop-beta" , mempty       , Just "8"  )
   ]
 
 -- frequently used applications
@@ -138,7 +146,7 @@ myLayouts        =
                    nMaster = 1
                    delta   = 3/100
                    frac    = 1/2
-myXMonadRestart  = (concatMap (\(app,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
+myXMonadRestart  = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
 myXMobarConfig n = myXMonadDir <> "xmobar-" <> show n <> ".hs"
 mySystemTray     = "stalonetray"
 mySysTrayConf n  = myXMonadDir <> "stalonetrayrc-" <> show n
