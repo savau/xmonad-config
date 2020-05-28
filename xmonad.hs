@@ -65,7 +65,7 @@ myKeys conf = Map.fromList $
   , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto allWindows)
   , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
 --, ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
-  , ((myModMask, xK_t     ), withFocused $ windows . S.sink)
+  , ((myModMask, xK_space ), withFocused $ windows . S.sink)
 
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
@@ -105,8 +105,8 @@ myStartupApplications =
   , ("pamac-tray"          , mempty       , mempty    )
   , ("keepassxc"           , mempty       , mempty    )
   , ("megasync"            , mempty       , mempty    )
-  , ("thunderbird"         , mempty       , Just "10" )
-  , ("zulip"               , mempty       , Just "9"  )
+--, ("thunderbird"         , mempty       , Just "10" )
+--, ("zulip"               , mempty       , Just "9"  )
 --, ("signal-desktop-beta" , mempty       , Just "8"  )
   ]
 
