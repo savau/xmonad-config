@@ -48,7 +48,7 @@ Config
     , Run MultiCpu
         [ "-t"       , "Cpu: <autototal>"
         , "-L"       , "50"
-        , "-H"       , "90"
+        , "-H"       , "75"
         , "--low"    , "green"
         , "--normal" , "yellow"
         , "--high"   , "red"
