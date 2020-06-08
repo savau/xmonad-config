@@ -112,13 +112,13 @@ myStartupApplications =
 
 -- frequently used applications
 myFUAs =
-  [ (xK_f, "pcmanfm"             )  -- file manager
-  , (xK_k, "keepassxc"           )  -- password manager
-  , (xK_w, "firefox"             )  -- web browser
-  , (xK_m, "thunderbird"         )  -- mail client
-  , (xK_c, "zulip"               )  -- chat client
-  , (xK_s, "signal-desktop-beta" )  -- messenger client
-  , (xK_t, "texstudio"           )  -- tex editor
+  [ (xK_f, "pcmanfm"                        )  -- file manager
+  , (xK_k, "keepassxc"                      )  -- password manager
+  , (xK_w, "firefox"                        )  -- web browser
+  , (xK_m, "LC_TIME=root.UTF-8 thunderbird" )  -- mail client
+  , (xK_c, "zulip"                          )  -- chat client
+  , (xK_s, "signal-desktop-beta"            )  -- messenger client
+  , (xK_t, "texstudio"                      )  -- tex editor
   ]
 
 myWorkspaces = zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
