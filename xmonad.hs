@@ -116,7 +116,8 @@ myFUAs =
   , (xK_k, "keepassxc"                      )  -- password manager
   , (xK_w, "firefox"                        )  -- web browser
   , (xK_m, "LC_TIME=root.UTF-8 thunderbird" )  -- mail client
-  , (xK_c, "zulip"                          )  -- chat client
+  , (xK_z, "zulip"                          )  -- chat client
+  , (xK_c, "google-calendar-dark"           )  -- calendar client
   , (xK_s, "signal-desktop-beta"            )  -- messenger client
   , (xK_t, "texstudio"                      )  -- tex editor
   ]
