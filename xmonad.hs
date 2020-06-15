@@ -38,6 +38,7 @@ main = do
     { modMask            = myModMask
     --, focusFollowsMouse  = False
     , focusedBorderColor = myMainColor
+    , normalBorderColor  = "#000000"
     , workspaces         = snd <$> myWorkspaces
 
     -- key bindings
