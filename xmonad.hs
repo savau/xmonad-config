@@ -120,6 +120,7 @@ myFUAs =
   , (xK_z, "zulip"                          )  -- chat client
   , (xK_c, "google-calendar-dark"           )  -- calendar client
   , (xK_s, "signal-desktop-beta"            )  -- messenger client
+  , (xK_p, "pidgin"                         )  -- XMPP client
   , (xK_t, "texstudio"                      )  -- tex editor
   ]
 
