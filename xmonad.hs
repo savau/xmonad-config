@@ -106,6 +106,7 @@ myStartupApplications =
   , ("pamac-tray"          , mempty       , mempty    )
   , ("keepassxc"           , mempty       , mempty    )
   , ("megasync"            , mempty       , mempty    )
+  , ("birdtray"            , mempty       , mempty    )
 --, ("thunderbird"         , mempty       , Just "10" )
 --, ("zulip"               , mempty       , Just "9"  )
 --, ("signal-desktop-beta" , mempty       , Just "8"  )
