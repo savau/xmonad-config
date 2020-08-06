@@ -99,17 +99,17 @@ myScreenLayouts = (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> my
 myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
-  [ ("xscreensaver"        , "-no-splash" , mempty    )
-  , ("nm-applet"           , mempty       , mempty    )
-  , ("blueman-applet"      , mempty       , mempty    )
-  , ("volumeicon"          , mempty       , mempty    )
-  , ("pamac-tray"          , mempty       , mempty    )
-  , ("keepassxc"           , mempty       , mempty    )
-  , ("megasync"            , mempty       , mempty    )
-  , ("birdtray"            , mempty       , mempty    )
---, ("thunderbird"         , mempty       , Just "10" )
---, ("zulip"               , mempty       , Just "9"  )
---, ("signal-desktop-beta" , mempty       , Just "8"  )
+  [ ("xscreensaver"                , "-no-splash" , mempty    )
+  , ("nm-applet"                   , mempty       , mempty    )
+  , ("blueman-applet"              , mempty       , mempty    )
+  , ("volumeicon"                  , mempty       , mempty    )
+  , ("pamac-tray"                  , mempty       , mempty    )
+  , ("keepassxc"                   , mempty       , mempty    )
+  , ("megasync"                    , mempty       , mempty    )
+  , ("LC_TIME=root.UTF-8 birdtray" , mempty       , mempty    )
+--, ("thunderbird"                 , mempty       , Just "10" )
+--, ("zulip"                       , mempty       , Just "9"  )
+--, ("signal-desktop-beta"         , mempty       , Just "8"  )
   ]
 
 -- frequently used applications
