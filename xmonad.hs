@@ -100,9 +100,9 @@ myLockScreenKeys = [xK_minus, xK_ssharp]
 
 myStartupApplications = 
   [ ("xscreensaver"                , "-no-splash" , mempty    )
+  , ("volumeicon"                  , mempty       , mempty    )
   , ("nm-applet"                   , mempty       , mempty    )
   , ("blueman-applet"              , mempty       , mempty    )
-  , ("volumeicon"                  , mempty       , mempty    )
   , ("pamac-tray"                  , mempty       , mempty    )
   , ("keepassxc"                   , mempty       , mempty    )
   , ("megasync"                    , mempty       , mempty    )
