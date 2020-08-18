@@ -124,6 +124,7 @@ myFUAs =
   , (xK_s, "signal-desktop-beta"            )  -- messenger client
   , (xK_p, "pidgin"                         )  -- XMPP client
   , (xK_t, "texstudio"                      )  -- tex editor
+  , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
