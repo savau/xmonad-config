@@ -4,6 +4,7 @@ import XMonad.Actions.SpawnOn (manageSpawn, spawnOn)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 
 import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
@@ -50,7 +51,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications >> setWMName "LG3D"
     }
     where
       startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " [app,opts]
