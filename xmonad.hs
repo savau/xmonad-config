@@ -124,6 +124,7 @@ myFUAs =
   , (xK_s, "signal-desktop-beta"            )  -- messenger client
   , (xK_p, "pidgin"                         )  -- XMPP client
   , (xK_t, "texstudio"                      )  -- tex editor
+  , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
 myWorkspaces = zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
