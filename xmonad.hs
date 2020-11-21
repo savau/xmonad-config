@@ -23,7 +23,10 @@ import qualified XMonad.StackSet as S
 
 import Control.Monad (forM)
 import Data.List (intercalate)
-import qualified Data.Map as Map (fromList)
+import qualified Data.Map as Map
+import Data.Map (Map)
+import qualified Data.Set as Set
+import Data.Set (Set)
 import System.Exit
 import System.IO
 
@@ -40,7 +43,7 @@ main = do
     --, focusFollowsMouse  = False
     , focusedBorderColor = myMainColor
     , normalBorderColor  = "#000000"
-    , workspaces         = snd <$> myWorkspaces
+    , workspaces         = Map.elems myWorkspaces
 
     -- key bindings
     , keys = myKeys
@@ -54,7 +57,7 @@ main = do
     , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications >> setWMName "LG3D"
     }
     where
-      startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " [app,opts]
+      startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " $ app : opts
 
 myKeys conf = Map.fromList $
   [ ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -83,38 +86,50 @@ myKeys conf = Map.fromList $
 
   , ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
   , ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
-  , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts myXPromptConf{ defaultPrompter = const "Screen layout: " })
+  , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
-  ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys) ++
-  ((\key -> ((myModMask, key), xmonadPromptC mySysPromptOpts myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 })) <$> mySystemKeys) ++
-  ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs) ++
+  ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys') ++
+  ((\key -> ((myModMask, key), xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 })) <$> Set.toList mySystemKeys) ++
+  ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
   [ ((myModMask, key), windows $ S.greedyView ws)
-    | (key,ws) <- myWorkspaces
+    | (key,ws) <- myWorkspaces'
   ] ++
   [ ((myModMask .|. shiftMask, key), windows $ S.shift ws)
-    | (key,ws) <- myWorkspaces
+    | (key,ws) <- myWorkspaces'
+  ]
+  where
+    myFUAs' = Map.toList myFUAs
+    myLockScreenKeys' = Set.toList myLockScreenKeys
+    myScreenLayouts' = Map.toList myScreenLayouts
+    myWorkspaces' = Map.toList myWorkspaces
+
+myScreenLayouts :: Map String (X ())
+myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
+
+myLockScreenKeys :: Set KeySym
+myLockScreenKeys = Set.fromList
+  [ xK_minus
+  , xK_ssharp
   ]
 
-myScreenLayouts = (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
-
-myLockScreenKeys = [xK_minus, xK_ssharp]
-
+myStartupApplications :: [(String, [String], Maybe WorkspaceId)]
 myStartupApplications = 
-  [ ("xscreensaver"                , "-no-splash" , mempty    )
-  , ("volumeicon"                  , mempty       , mempty    )
-  , ("nm-applet"                   , mempty       , mempty    )
-  , ("blueman-applet"              , mempty       , mempty    )
-  , ("pamac-tray"                  , mempty       , mempty    )
-  , ("keepassxc"                   , mempty       , mempty    )
-  , ("megasync"                    , mempty       , mempty    )
-  , ("LC_TIME=root.UTF-8 birdtray" , mempty       , mempty    )
---, ("thunderbird"                 , mempty       , Just "10" )
---, ("zulip"                       , mempty       , Just "9"  )
---, ("signal-desktop-beta"         , mempty       , Just "8"  )
+  [ ("xscreensaver"                , ["-no-splash"] , mempty    )
+  , ("volumeicon"                  , mempty         , mempty    )
+  , ("nm-applet"                   , mempty         , mempty    )
+  , ("blueman-applet"              , mempty         , mempty    )
+  , ("pamac-tray"                  , mempty         , mempty    )
+  , ("keepassxc"                   , mempty         , mempty    )
+  , ("megasync"                    , mempty         , mempty    )
+  , ("LC_TIME=root.UTF-8 birdtray" , mempty         , mempty    )
+--, ("thunderbird"                 , mempty         , Just "10" )
+--, ("zulip"                       , mempty         , Just "9"  )
+--, ("signal-desktop-beta"         , mempty         , Just "8"  )
   ]
 
 -- frequently used applications
-myFUAs =
+myFUAs :: Map KeySym String
+myFUAs = Map.fromList
   [ (xK_f, "thunar"                         )  -- file manager
   , (xK_k, "keepassxc"                      )  -- password manager
   , (xK_w, "firefox"                        )  -- web browser
@@ -128,8 +143,10 @@ myFUAs =
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
-myWorkspaces = zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
+myWorkspaces :: Map KeySym String
+myWorkspaces = Map.fromList $ zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
 
+myPP :: PP
 myPP = xmobarPP
   { ppCurrent = xmobarColor myMainColor   mempty . wrap "[" "]"
   , ppUrgent  = xmobarColor myUrgentColor mempty . wrap "!" "!"
@@ -137,34 +154,52 @@ myPP = xmobarPP
   }
 
 -- auxiliary defs
-myModMask        = mod4Mask   -- Mod == Super
-myFUAMask        = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
-myMainColor      = "#0084ff"
-myUrgentColor    = "#ff0000"
-myLayouts        = 
-                     Tall nMaster delta frac
-                 ||| Mirror (Tall nMaster delta frac)
-                 ||| ThreeCol nMaster delta frac
-                 ||| Mirror (ThreeCol nMaster delta frac)
-                 -- ||| ResizableTall nMaster delta frac [1]
-                 ||| spiral (6/7)
-                 ||| Full
-                 where
-                   nMaster = 1
-                   delta   = 3/100
-                   frac    = 1/2
-myXMonadRestart  = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
+
+myModMask, myFUAMask :: KeyMask
+myModMask = mod4Mask   -- Mod == Super
+myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
+
+myMainColor, myUrgentColor :: String
+myMainColor   = "#0084ff"
+myUrgentColor = "#ff0000"
+
+myLayouts = 
+              Tall nMaster delta frac
+          ||| Mirror (Tall nMaster delta frac)
+          ||| ThreeCol nMaster delta frac
+          ||| Mirror (ThreeCol nMaster delta frac)
+          -- ||| ResizableTall nMaster delta frac [1]
+          ||| spiral (6/7)
+          ||| Full
+          where
+            nMaster = 1
+            delta   = 3/100
+            frac    = 1/2
+
+myXMonadRestart :: String
+myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
+
+myXMobarConfig :: Int -> String
 myXMobarConfig n = myXMonadDir <> "xmobar-" <> show n <> ".hs"
-mySystemTray     = "stalonetray"
-mySysTrayConf n  = myXMonadDir <> "stalonetrayrc-" <> show n
-mySystemKeys     = [xK_equal]  -- TODO add dead_acute
-mySysPromptOpts  =
+
+mySystemTray :: String
+mySystemTray = "stalonetray"
+mySysTrayConf :: Int -> String
+mySysTrayConf n = myXMonadDir <> "stalonetrayrc-" <> show n
+
+mySystemKeys :: Set KeySym
+mySystemKeys = Set.singleton xK_equal  -- TODO add dead_acute
+
+mySysPromptOpts :: MonadIO m => Map String (m ())
+mySysPromptOpts = Map.fromList
   [ ( "Logout"       , io $ exitWith ExitSuccess)
   , ( "Suspend"      , spawn "systemctl suspend")
   , ( "Hibernate"    , spawn "systemctl hibernate")
   , ( "Reboot"       , spawn "systemctl reboot")
   , ( "Poweroff"     , spawn "systemctl poweroff")
   ]
+
+myXPromptConf :: XPConfig
 myXPromptConf    = def
   { font         = "xft:Droid Sans Mono-10:antialias=true"
   , height       = 25
@@ -172,4 +207,5 @@ myXPromptConf    = def
   }
 
 -- convenience defs
+altMask :: KeyMask
 altMask = mod1Mask
