@@ -1,3 +1,5 @@
+{-# LANGUAGE RecordWildCards #-}
+
 import XMonad
 
 import XMonad.Actions.SpawnOn (manageSpawn, spawnOn)
@@ -43,7 +45,7 @@ main = do
     --, focusFollowsMouse  = False
     , focusedBorderColor = myMainColor
     , normalBorderColor  = "#000000"
-    , workspaces         = Map.elems myWorkspaces
+    , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
 
     -- key bindings
     , keys = myKeys
@@ -91,17 +93,17 @@ myKeys conf = Map.fromList $
   ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 })) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
-  [ ((myModMask, key), windows $ S.greedyView ws)
-    | (key,ws) <- myWorkspaces'
+  [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
+    | Workspace{..} <- myWorkspaces'
   ] ++
-  [ ((myModMask .|. shiftMask, key), windows $ S.shift ws)
-    | (key,ws) <- myWorkspaces'
+  [ ((myModMask .|. shiftMask, wsKeySym), windows $ (S.shift . show) wsId)
+    | Workspace{..} <- myWorkspaces'
   ]
   where
-    myFUAs' = Map.toList myFUAs
+    myFUAs'           = Map.toList myFUAs
     myLockScreenKeys' = Set.toList myLockScreenKeys
-    myScreenLayouts' = Map.toList myScreenLayouts
-    myWorkspaces' = Map.toList myWorkspaces
+    myScreenLayouts'  = Map.toList myScreenLayouts
+    myWorkspaces'     = Set.toList myWorkspaces
 
 myScreenLayouts :: Map String (X ())
 myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
@@ -143,8 +145,18 @@ myFUAs = Map.fromList
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
-myWorkspaces :: Map KeySym String
-myWorkspaces = Map.fromList $ zip ([xK_1..xK_9] ++ [xK_0]) $ show <$> [1..10]
+-- Wrapper type to map wo
+data Workspace = Workspace
+                 { wsId     :: Int
+                 , wsKeySym :: KeySym
+                 }
+                 deriving (Eq, Show, Read)
+
+instance Ord Workspace where
+  compare (Workspace i _) (Workspace j _) = compare i j
+
+myWorkspaces :: Set Workspace
+myWorkspaces = Set.fromList $ (\(wsId,wsKeySym) -> Workspace{..}) <$> (zip (10:[1..9]) [xK_0..xK_9])
 
 myPP :: PP
 myPP = xmobarPP
