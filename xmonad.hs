@@ -42,7 +42,7 @@ mySystemTrayDir = myXMonadDir <> "system-tray/"
 main = do
   spawn "autorandr --change"
   nScreens <- countScreens
-  xmprocs  <- sequence $ (\n -> spawnPipe $ "xmobar " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
+  xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
     --, focusFollowsMouse  = False
@@ -192,8 +192,10 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
+myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall " <> myStatusBar <> "; xmonad --restart"
 
+myStatusBar :: String
+myStatusBar = "xmobar"
 myXMobarConfig :: Int -> String
 myXMobarConfig n = myStatusBarDir <> "xmobar/xmobar-" <> show n <> ".hs"
 
