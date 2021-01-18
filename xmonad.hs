@@ -35,6 +35,7 @@ import System.IO
 
 myXMonadDir = "~/.xmonad/"
 
+myStatusBarDir  = myXMonadDir <> "status-bar/"
 mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 
@@ -194,7 +195,7 @@ myXMonadRestart :: String
 myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall xmobar; xmonad --restart"
 
 myXMobarConfig :: Int -> String
-myXMobarConfig n = myXMonadDir <> "xmobar-" <> show n <> ".hs"
+myXMobarConfig n = myStatusBarDir <> "xmobar/xmobar-" <> show n <> ".hs"
 
 mySystemTray :: String
 mySystemTray = "stalonetray"
