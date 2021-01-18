@@ -1,0 +1,18 @@
+# libalpm post-transaction hook to automatically recompile xmonad after xmonad or haskell libs update
+# source: https://gist.github.com/CRTified/708c01806ff0ab76954d4aed9a1182af
+
+# symlink this hook into the libalpm hooks directory:
+#   ```sudo ln -sf <path to your xmonad directory>/misc/libalpmn-hooks/xmonad-recompile.hook /usr/share/libalpm/hooks/xmonad-recompile.hook```
+
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Type=Package
+Target=xmonad
+Target=haskell-*
+
+[Action]
+Depends=xmonad
+When=PostTransaction
+Exec=/bin/sh -c 'awk -F : "{print \$1\" \"\$6}" /etc/passwd | while IFS=" " read -r l_name l_dir ; do if [ -f "${l_dir}/.xmonad/xmonad.hs" ]; then echo Recompiling xmonad for $l_name...; sudo -n -u $l_name xmonad --recompile; fi; done'
+Description=Recompiling xmonad...
