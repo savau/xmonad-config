@@ -35,6 +35,8 @@ import System.IO
 
 myXMonadDir = "~/.xmonad/"
 
+mySystemTrayDir = myXMonadDir <> "system-tray/"
+
 
 main = do
   spawn "autorandr --change"
@@ -197,7 +199,7 @@ myXMobarConfig n = myXMonadDir <> "xmobar-" <> show n <> ".hs"
 mySystemTray :: String
 mySystemTray = "stalonetray"
 mySysTrayConf :: Int -> String
-mySysTrayConf n = myXMonadDir <> "stalonetrayrc-" <> show n
+mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
 
 mySystemKeys :: Set KeySym
 mySystemKeys = Set.singleton xK_equal  -- TODO add dead_acute
