@@ -125,7 +125,7 @@ myStartupApplications =
   , ("blueman-applet"              , mempty         , mempty    )
   , ("pamac-tray"                  , mempty         , mempty    )
   , ("keepassxc"                   , mempty         , mempty    )
-  , ("megasync"                    , mempty         , mempty    )
+  , ("QT_SCALE_FACTOR=1 megasync"  , mempty         , mempty    )
   , ("LC_TIME=root.UTF-8 birdtray" , mempty         , mempty    )
 --, ("thunderbird"                 , mempty         , Just "10" )
 --, ("zulip"                       , mempty         , Just "9"  )
