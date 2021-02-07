@@ -135,7 +135,7 @@ myStartupApplications =
 -- frequently used applications
 myFUAs :: Map KeySym String
 myFUAs = Map.fromList
-  [ (xK_f, "thunar"                         )  -- file manager
+  [ (xK_f, "pcmanfm"                        )  -- file manager
   , (xK_k, "keepassxc"                      )  -- password manager
   , (xK_w, "firefox"                        )  -- web browser
   , (xK_m, "LC_TIME=root.UTF-8 thunderbird" )  -- mail client
