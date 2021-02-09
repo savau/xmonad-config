@@ -209,18 +209,18 @@ mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
 mySystemKeys :: Set KeySym
 mySystemKeys = Set.singleton xK_equal  -- TODO add dead_acute
 
-
--- obsolete with xfce4-session-logout
 myXMonadSysPrompt :: X ()
-myXMonadSysPrompt = xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 } where
-  mySysPromptOpts :: MonadIO m => Map String (m ())
-  mySysPromptOpts = Map.fromList
-    [ ( "Logout"       , io $ exitWith ExitSuccess)  -- FIXME: does not work with xfce4
-    , ( "Suspend"      , spawn "systemctl suspend")
-    , ( "Hibernate"    , spawn "systemctl hibernate")
-    , ( "Reboot"       , spawn "systemctl reboot")
-    , ( "Poweroff"     , spawn "systemctl poweroff")
-    ]
+myXMonadSysPrompt = spawn "xfce4-session-logout"
+-- obsolete with xfce4-session-logout
+--myXMonadSysPrompt = xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 } where
+--  mySysPromptOpts :: MonadIO m => Map String (m ())
+--  mySysPromptOpts = Map.fromList
+--    [ ( "Logout"       , io $ exitWith ExitSuccess)  -- FIXME: does not work with xfce4
+--    , ( "Suspend"      , spawn "systemctl suspend")
+--    , ( "Hibernate"    , spawn "systemctl hibernate")
+--    , ( "Reboot"       , spawn "systemctl reboot")
+--    , ( "Poweroff"     , spawn "systemctl poweroff")
+--    ]
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
