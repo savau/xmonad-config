@@ -40,9 +40,9 @@ mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 
 main = do
-  -- spawn "autorandr --change"
-  -- nScreens <- countScreens
-  -- xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
+  spawn "autorandr --change"
+  nScreens <- countScreens
+  xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
     --, focusFollowsMouse  = False
@@ -55,11 +55,11 @@ main = do
 
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
-    -- , logHook     = dynamicLogWithPP myPP
-    --   { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
-    --   }
+    , logHook     = dynamicLogWithPP myPP
+      { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
+      }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    -- , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications >> setWMName "LG3D"
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications >> setWMName "LG3D"
     }
     where
       startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " $ app : opts
@@ -192,8 +192,7 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "; xmonad --restart"
-  -- <> "killall " <> mySystemTray <> "; killall " <> myStatusBar <> "; xmonad --restart"
+myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall " <> myStatusBar <> "; xmonad --restart"
 
 myStatusBar :: String
 myStatusBar = "xmobar"
