@@ -1,0 +1,3 @@
+[submodule "utils/log-applet"]
+	path = utils/log-applet
+	url = https://github.com/alexkay/xmonad-log-applet
