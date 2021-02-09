@@ -175,8 +175,8 @@ myModMask = mod4Mask   -- Mod == Super
 myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 
 myMainColor, myUrgentColor :: String
-myMainColor   = "#0084ff"
-myUrgentColor = "#ff0000"
+myMainColor   = "#383c4a"
+myUrgentColor = "#5294e2"
 
 myLayouts = 
               Tall nMaster delta frac
