@@ -80,20 +80,18 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
   , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
   , ((myModMask .|. shiftMask, xK_Left ), sendMessage FirstLayout)
-  , ((myModMask .|. shiftMask, xK_Right), sendMessage NextLayout)
+  , ((myModMask .|. shiftMask, xK_Right), sendMessage NextLayout)       -- cycle through layouts
+  , ((myModMask .|. shiftMask, xK_space), setLayout $ layoutHook conf)  -- reset layout
 
-  , ((myModMask .|. controlMask, xK_space ), setLayout $ layoutHook conf)
   , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
   , ((myModMask .|. controlMask, xK_Right ), sendMessage Expand)
-  , ((myModMask .|. controlMask, xK_Up    ), sendMessage MirrorShrink)
-  , ((myModMask .|. controlMask, xK_Down  ), sendMessage MirrorExpand)
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
 
   --, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
   --, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
-  ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys') ++
+  ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
@@ -207,7 +205,7 @@ mySysTrayConf :: Int -> String
 mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
 
 mySystemKeys :: Set KeySym
-mySystemKeys = Set.singleton xK_equal  -- TODO add dead_acute
+mySystemKeys = Set.singleton xK_equal
 
 myXMonadSysPrompt :: X ()
 myXMonadSysPrompt = spawn "xfce4-session-logout"
