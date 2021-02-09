@@ -163,7 +163,8 @@ myWorkspaces = Set.fromList $ (\(wsId,wsKeySym) -> Workspace{..}) <$> (zip (10:[
 
 myPP :: PP
 myPP = xmobarPP
-  { ppCurrent = xmobarColor myMainColor   mempty . wrap "[" "]"
+  { ppCurrent = xmobarColor myFocusColor  mempty . wrap "[" "]"
+  , ppHidden  = xmobarColor myMainColor   mempty
   , ppUrgent  = xmobarColor myUrgentColor mempty . wrap "!" "!"
   , ppSep     = " | "
   }
@@ -174,8 +175,9 @@ myModMask, myFUAMask :: KeyMask
 myModMask = mod4Mask   -- Mod == Super
 myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 
-myMainColor, myUrgentColor :: String
+myMainColor, myFocusColor, myUrgentColor :: String
 myMainColor   = "#383c4a"
+myFocusColor  = "#bbbbbb"
 myUrgentColor = "#5294e2"
 
 myLayouts = 
