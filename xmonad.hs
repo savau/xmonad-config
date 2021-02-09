@@ -194,7 +194,7 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\(app,_,_) -> "killall " <> app <> "; ") myStartupApplications) <> "killall " <> mySystemTray <> "; killall " <> myStatusBar <> "; xmonad --restart"
+myXMonadRestart = (concatMap (\(app,_,_) -> "pkill " <> app <> "; ") myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
 
 myStatusBar :: String
 myStatusBar = "xmobar"
