@@ -94,7 +94,7 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask, key), spawn "xscreensaver-command -lock; xset dpms force off")) <$> myLockScreenKeys') ++
-  ((\key -> ((myModMask, key), xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 })) <$> Set.toList mySystemKeys) ++
+  ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
@@ -209,14 +209,18 @@ mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
 mySystemKeys :: Set KeySym
 mySystemKeys = Set.singleton xK_equal  -- TODO add dead_acute
 
-mySysPromptOpts :: MonadIO m => Map String (m ())
-mySysPromptOpts = Map.fromList
-  [ ( "Logout"       , io $ exitWith ExitSuccess)
-  , ( "Suspend"      , spawn "systemctl suspend")
-  , ( "Hibernate"    , spawn "systemctl hibernate")
-  , ( "Reboot"       , spawn "systemctl reboot")
-  , ( "Poweroff"     , spawn "systemctl poweroff")
-  ]
+
+-- obsolete with xfce4-session-logout
+myXMonadSysPrompt :: X ()
+myXMonadSysPrompt = xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 } where
+  mySysPromptOpts :: MonadIO m => Map String (m ())
+  mySysPromptOpts = Map.fromList
+    [ ( "Logout"       , io $ exitWith ExitSuccess)  -- FIXME: does not work with xfce4
+    , ( "Suspend"      , spawn "systemctl suspend")
+    , ( "Hibernate"    , spawn "systemctl hibernate")
+    , ( "Reboot"       , spawn "systemctl reboot")
+    , ( "Poweroff"     , spawn "systemctl poweroff")
+    ]
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
