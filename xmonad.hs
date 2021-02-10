@@ -40,7 +40,6 @@ mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 
 main = do
-  spawn "autorandr --change"
   nScreens <- countScreens
   xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
