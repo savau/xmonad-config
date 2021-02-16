@@ -134,11 +134,12 @@ myFUAs :: Map KeySym String
 myFUAs = Map.fromList
   [ (xK_f, "thunar"                         )  -- file manager
   , (xK_k, "keepassxc"                      )  -- password manager
+  , (xK_s, "xfce4-screenshooter")  -- screenshot application
   , (xK_w, "firefox"                        )  -- web browser
   , (xK_m, "LC_TIME=root.UTF-8 thunderbird" )  -- mail client
   , (xK_z, "zulip"                          )  -- chat client
   , (xK_c, "google-calendar-dark"           )  -- calendar client
-  , (xK_s, "signal-desktop-beta"            )  -- messenger client
+--, (xK_s, "signal-desktop-beta"            )  -- messenger client
   , (xK_p, "pidgin"                         )  -- XMPP client
   , (xK_t, "texstudio"                      )  -- tex editor
   , (xK_o, "octave --gui"                   )  -- GNU Octave
