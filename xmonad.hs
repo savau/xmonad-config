@@ -45,7 +45,7 @@ main = do
   xmonad $ docks def
     { modMask            = myModMask
     --, focusFollowsMouse  = False
-    , focusedBorderColor = myMainColor
+    , focusedBorderColor = myMainColorDark
     , normalBorderColor  = "#000000"
     , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
 
@@ -161,9 +161,9 @@ myWorkspaces = Set.fromList $ (\(wsId,wsKeySym) -> Workspace{..}) <$> (zip (10:[
 
 myPP :: PP
 myPP = xmobarPP
-  { ppCurrent = xmobarColor myFocusColor  mempty . wrap "[" "]"
-  , ppHidden  = xmobarColor myMainColor   mempty
-  , ppUrgent  = xmobarColor myUrgentColor mempty . wrap "!" "!"
+  { ppCurrent = xmobarColor myFocusColor     mempty . wrap "[" "]"
+  , ppHidden  = xmobarColor myMainColorLight mempty
+  , ppUrgent  = xmobarColor myUrgentColor    mempty . wrap "!" "!"
   , ppSep     = " | "
   }
 
@@ -173,10 +173,11 @@ myModMask, myFUAMask :: KeyMask
 myModMask = mod4Mask   -- Mod == Super
 myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 
-myMainColor, myFocusColor, myUrgentColor :: String
-myMainColor   = "#383c4a"
-myFocusColor  = "#bbbbbb"
-myUrgentColor = "#5294e2"
+myMainColorLight, myMainColorDark, myFocusColor, myUrgentColor :: String
+myMainColorLight = "#7c818c"
+myMainColorDark  = "#383c4a"
+myFocusColor     = "#ffffff"
+myUrgentColor    = "#5294e2"
 
 myLayouts = 
               Tall nMaster delta frac
