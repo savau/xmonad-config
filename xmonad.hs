@@ -121,7 +121,7 @@ myStartupApplications =
   , ("volumeicon"                  , mempty         , mempty    )
   , ("nm-applet"                   , mempty         , mempty    )
   , ("blueman-applet"              , mempty         , mempty    )
-  , ("pamac-tray"                  , mempty         , mempty    )
+--, ("pamac-tray"                  , mempty         , mempty    )
   , ("keepassxc"                   , mempty         , mempty    )
   , ("QT_SCALE_FACTOR=1 megasync"  , mempty         , mempty    )
   , ("LC_TIME=root.UTF-8 birdtray" , mempty         , mempty    )
@@ -139,8 +139,8 @@ myFUAs = Map.fromList
   , (xK_m, "LC_TIME=root.UTF-8 thunderbird" )  -- mail client
   , (xK_z, "zulip"                          )  -- chat client
   , (xK_c, "google-calendar-dark"           )  -- calendar client
-  , (xK_s, "signal-desktop-beta"            )  -- messenger client
-  , (xK_p, "pidgin"                         )  -- XMPP client
+  , (xK_s, "signal-desktop"                 )  -- messenger client
+--, (xK_p, "pidgin"                         )  -- XMPP client
   , (xK_t, "texstudio"                      )  -- tex editor
   , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
