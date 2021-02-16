@@ -8,3 +8,5 @@
 *-x86_64-linux
 
 prompt-history
+
+*.swp
