@@ -38,8 +38,8 @@
     octave
     signal-desktop
     texstudio
-    thunar
     thunderbird
+    xfce.thunar
     zulip
   ];
 }
