@@ -151,12 +151,12 @@ myFUAs conf = Map.fromList
     myU2WLaunch :: String
     myU2WLaunch = intercalate " "
                   [ "cd ~/u2w;"             -- cd into u2w directory
-                  , "nix-shell --run zsh;"  -- launch nix-shell (manually launch zsh, see https://github.com/NixOS/nix/pull/545)
+                  , "nix-shell --run '"     -- launch nix-shell (manually launch zsh here if wanted, see https://github.com/NixOS/nix/pull/545)
                   , "rm -rf minio-tmp/;"    -- remove any prior minio-tmp/ directory (minio workaround preparaition part 1 of 2)
                   , "mkdir minio-tmp/;"     -- create new minio-tmp/ directory (minio workaround preparation part 2 of 2)
                   , "minio server --address localhost:9000 minio-tmp/ &"  -- manually launch minio server with workaround directory (workaround for minio server crashing due to missing writing permissions on tmp dir)
                   , "./db.sh -cf;"          -- fill the database
-                  , "npm run start"
+                  , "npm run start'"        -- launch the watcher
                   ]
 
 -- Wrapper type to map wo
