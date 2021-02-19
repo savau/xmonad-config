@@ -63,8 +63,10 @@ main = do
     where
       startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " $ app : opts
 
+myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
-  [ ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
+  [ 
+    ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows S.focusDown)
   , ((myModMask, xK_Up    ), windows S.focusUp)
@@ -101,7 +103,7 @@ myKeys conf = Map.fromList $
     | Workspace{..} <- myWorkspaces'
   ]
   where
-    myFUAs'           = Map.toList myFUAs
+    myFUAs'           = Map.toList $ myFUAs conf
     myLockScreenKeys' = Set.toList myLockScreenKeys
     myScreenLayouts'  = Map.toList myScreenLayouts
     myWorkspaces'     = Set.toList myWorkspaces
@@ -117,13 +119,13 @@ myLockScreenKeys = Set.fromList
 
 myStartupApplications :: [(String, [String], Maybe WorkspaceId)]
 myStartupApplications = 
-  [ ("xscreensaver"                , ["-no-splash"] , mempty    )
+  [
   , ("volumeicon"                  , mempty         , mempty    )
   , ("nm-applet"                   , mempty         , mempty    )
   , ("blueman-applet"              , mempty         , mempty    )
---, ("pamac-tray"                  , mempty         , mempty    )
+--, ("pamac-tray"                  , mempty         , mempty    )  -- TODO: launch this iff on Arch Linux
   , ("keepassxc"                   , mempty         , mempty    )
-  , ("QT_SCALE_FACTOR=1 megasync"  , mempty         , mempty    )
+  , ("QT_SCALE_FACTOR=1 megasync"  , mempty         , mempty    )  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
   , ("LC_TIME=root.UTF-8 birdtray" , mempty         , mempty    )
 --, ("thunderbird"                 , mempty         , Just "10" )
 --, ("zulip"                       , mempty         , Just "9"  )
@@ -131,8 +133,8 @@ myStartupApplications =
   ]
 
 -- frequently used applications
-myFUAs :: Map KeySym String
-myFUAs = Map.fromList
+myFUAs :: XConfig Layout -> Map KeySym String
+myFUAs conf = Map.fromList
   [ (xK_f, "thunar"                         )  -- file manager
   , (xK_k, "keepassxc"                      )  -- password manager
   , (xK_w, "firefox"                        )  -- web browser
@@ -144,6 +146,7 @@ myFUAs = Map.fromList
   , (xK_t, "texstudio"                      )  -- tex editor
   , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
+  , (xK_u, XMonad.terminal conf <> " -e \"cd ~/u2w; nix-shell --run zsh\"")  -- spawn u2w terminal (manually launching zsh, see https://github.com/NixOS/nix/pull/545)
   ]
 
 -- Wrapper type to map wo
