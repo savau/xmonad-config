@@ -145,8 +145,19 @@ myFUAs conf = Map.fromList
   , (xK_t, "texstudio"                      )  -- tex editor
   , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
-  , (xK_u, XMonad.terminal conf <> " -e \"cd ~/u2w; nix-shell --run zsh\"")  -- spawn u2w terminal (manually launching zsh, see https://github.com/NixOS/nix/pull/545)
+  , (xK_u, XMonad.terminal conf <> " -e \" " <> myU2WLaunch <> "\"")  -- spawn terminal and launch u2w watcher
   ]
+  where
+    myU2WLaunch :: String
+    myU2WLaunch = intercalate " "
+                  [ "cd ~/u2w;"             -- cd into u2w directory
+                  , "nix-shell --run zsh;"  -- launch nix-shell (manually launch zsh, see https://github.com/NixOS/nix/pull/545)
+                  , "rm -rf minio-tmp/;"    -- remove any prior minio-tmp/ directory (minio workaround preparaition part 1 of 2)
+                  , "mkdir minio-tmp/;"     -- create new minio-tmp/ directory (minio workaround preparation part 2 of 2)
+                  , "minio server --address localhost:9000 minio-tmp/ &"  -- manually launch minio server with workaround directory (workaround for minio server crashing due to missing writing permissions on tmp dir)
+                  , "./db.sh -cf;"          -- fill the database
+                  , "npm run start"
+                  ]
 
 -- Wrapper type to map wo
 data Workspace = Workspace
