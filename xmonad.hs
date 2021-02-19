@@ -119,8 +119,7 @@ myLockScreenKeys = Set.fromList
 
 myStartupApplications :: [(String, [String], Maybe WorkspaceId)]
 myStartupApplications = 
-  [
-  , ("volumeicon"                  , mempty         , mempty    )
+  [ ("volumeicon"                  , mempty         , mempty    )
   , ("nm-applet"                   , mempty         , mempty    )
   , ("blueman-applet"              , mempty         , mempty    )
 --, ("pamac-tray"                  , mempty         , mempty    )  -- TODO: launch this iff on Arch Linux
