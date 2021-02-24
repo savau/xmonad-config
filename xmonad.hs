@@ -87,6 +87,7 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
   , ((myModMask .|. controlMask, xK_Right ), sendMessage Expand)
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
+  , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
   --, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
   --, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
