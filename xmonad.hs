@@ -97,6 +97,7 @@ myKeys conf = Map.fromList $
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
+  ((\(mask,cmd) -> ((myModMask .|. mask, xK_u), spawn $ XMonad.terminal conf <> " -e ~/.util/u2w/" <> cmd <> ".sh")) <$> myU2WCommands') ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
@@ -104,9 +105,10 @@ myKeys conf = Map.fromList $
     | Workspace{..} <- myWorkspaces'
   ]
   where
-    myFUAs'           = Map.toList $ myFUAs conf
+    myFUAs'           = Map.toList myFUAs
     myLockScreenKeys' = Set.toList myLockScreenKeys
     myScreenLayouts'  = Map.toList myScreenLayouts
+    myU2WCommands'    = Map.toList myU2WCommands
     myWorkspaces'     = Set.toList myWorkspaces
 
 myScreenLayouts :: Map String (X ())
@@ -119,7 +121,7 @@ myLockScreenKeys = Set.fromList
   ]
 
 myStartupApplications :: [(String, [String], Maybe WorkspaceId)]
-myStartupApplications = 
+myStartupApplications =
   [ ("volumeicon"                  , mempty         , mempty    )
   , ("nm-applet"                   , mempty         , mempty    )
   , ("blueman-applet"              , mempty         , mempty    )
@@ -133,8 +135,8 @@ myStartupApplications =
   ]
 
 -- frequently used applications
-myFUAs :: XConfig Layout -> Map KeySym String
-myFUAs conf = Map.fromList
+myFUAs :: Map KeySym String
+myFUAs = Map.fromList
   [ (xK_f, "thunar"                         )  -- file manager
   , (xK_k, "keepassxc"                      )  -- password manager
   , (xK_w, "firefox"                        )  -- web browser
@@ -146,21 +148,15 @@ myFUAs conf = Map.fromList
   , (xK_t, "texstudio"                      )  -- tex editor
   , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
-  , (xK_u, XMonad.terminal conf <> " -e \" " <> myU2WLaunch <> "\"")  -- spawn terminal and launch u2w watcher
   ]
-  where
-    myU2WLaunch :: String
-    myU2WLaunch = intercalate " "
-                  [ "cd ~/u2w;"             -- cd into u2w directory
-                  , "nix-shell --run '"     -- launch nix-shell (manually launch zsh here if wanted, see https://github.com/NixOS/nix/pull/545)
-                  , "rm -rf minio-tmp/;"    -- remove any prior minio-tmp/ directory (minio workaround preparaition part 1 of 2)
-                  , "mkdir minio-tmp/;"     -- create new minio-tmp/ directory (minio workaround preparation part 2 of 2)
-                  , "minio server --address localhost:9000 minio-tmp/ &"  -- manually launch minio server with workaround directory (workaround for minio server crashing due to missing writing permissions on tmp dir)
-                  , "./db.sh -cf;"          -- fill the database
-                  , "npm run start'"        -- launch the watcher
-                  ]
 
--- Wrapper type to map wo
+myU2WCommands :: Map KeyMask String
+myU2WCommands = Map.fromList
+  [ (shiftMask   , "watch")
+  , (controlMask , "kill" )
+  ]
+
+-- Wrapper type to map workspaces 
 data Workspace = Workspace
                  { wsId     :: Int
                  , wsKeySym :: KeySym
@@ -198,7 +194,7 @@ myLayouts =
           ||| Mirror (Tall nMaster delta frac)
           ||| ThreeCol nMaster delta frac
           ||| Mirror (ThreeCol nMaster delta frac)
-          -- ||| ResizableTall nMaster delta frac [1]
+       -- ||| ResizableTall nMaster delta frac [1]
           ||| spiral (6/7)
           ||| Full
           where
