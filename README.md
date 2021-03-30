@@ -1,5 +1,5 @@
 # xmonad-config
-My personal XMonad setup
+My personal XMonad configuration
 
 ## Installation
 
@@ -23,17 +23,17 @@ On NixOS:
         ];
       };
     };
-    # set as default, e.g. in combination with your prefered desktopManager:
-    displayManager.defaultSession = "xfce+xmonad";
+    # set as default, e.g. in combination with your prefered desktopManager or as standalone:
+    displayManager.defaultSession = "none+xmonad";
   };
 }
 ```
 3. `nixos-rebuild switch`
 
-On Arch (assuming a display manager such as LightDM is already configured):
+On Arch (assuming a display manager such as LightDM is already installed and configured):
 
 1. Install required packages:  
   ```sudo pacman -S xmonad xmonad-contrib xmonad-utils xmobar xscreensaver stalonetray```
 2. Clone this repository into `~/.xmonad/`
-3. Recompile and restart XMonad (it might be necessary to kill and restart `stalonetray` as well):  
+3. Recompile and restart XMonad:  
   ```xmonad --recompile && xmonad --restart```
