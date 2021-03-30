@@ -152,8 +152,8 @@ myFUAs = Map.fromList
 
 myU2WCommands :: Map KeyMask String
 myU2WCommands = Map.fromList
-  [ (shiftMask   , "watch")
-  , (controlMask , "kill" )
+  [ (shiftMask   , "launch-shell")
+  , (controlMask , "kill"        )
   ]
 
 -- Wrapper type to map workspaces 
