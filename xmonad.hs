@@ -97,7 +97,7 @@ myKeys conf = Map.fromList $
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
-  ((\(mask,cmd) -> ((myModMask .|. mask, xK_u), spawn $ XMonad.terminal conf <> " -e ~/.util/u2w/" <> cmd <> ".sh")) <$> myU2WCommands') ++
+  ((\(mask,cmd) -> ((myModMask .|. mask, xK_u), spawn cmd)) <$> myU2WCommands') ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
@@ -108,7 +108,7 @@ myKeys conf = Map.fromList $
     myFUAs'           = Map.toList myFUAs
     myLockScreenKeys' = Set.toList myLockScreenKeys
     myScreenLayouts'  = Map.toList myScreenLayouts
-    myU2WCommands'    = Map.toList myU2WCommands
+    myU2WCommands'    = Map.toList $ myU2WCommands conf
     myWorkspaces'     = Set.toList myWorkspaces
 
 myScreenLayouts :: Map String (X ())
@@ -151,10 +151,10 @@ myFUAs = Map.fromList
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
-myU2WCommands :: Map KeyMask String
-myU2WCommands = Map.fromList
-  [ (shiftMask   , "launch-shell")
-  , (controlMask , "kill"        )
+myU2WCommands :: XConfig Layout -> Map KeyMask String
+myU2WCommands conf = Map.fromList
+  [ (shiftMask   , XMonad.terminal conf <> " -e ~/.util/u2w/launch-shell.sh" )
+  , (controlMask , "~/.util/u2w/kill.sh" )
   ]
 
 -- Wrapper type to map workspaces 
