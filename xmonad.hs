@@ -153,8 +153,8 @@ myFUAs = Map.fromList
 
 myU2WCommands :: XConfig Layout -> Map KeyMask String
 myU2WCommands conf = Map.fromList
-  [ (shiftMask   , XMonad.terminal conf <> " -e ~/.util/u2w/launch-shell.sh" )
-  , (controlMask , "~/.util/u2w/kill.sh" )
+  [ ( shiftMask   , "~/.util/u2w/sshfs/start.sh" )
+  , ( controlMask , "~/.util/u2w/sshfs/stop.sh"  )
   ]
 
 -- Wrapper type to map workspaces 
