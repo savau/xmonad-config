@@ -86,7 +86,7 @@ myKeys conf = Map.fromList $
 
   , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
   , ((myModMask .|. controlMask, xK_Right ), sendMessage Expand)
-  , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile; " <> myXMonadRestart)
+  , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart)
   , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
   --, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
@@ -97,7 +97,7 @@ myKeys conf = Map.fromList $
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
-  ((\(mask,cmd) -> ((myModMask .|. mask, xK_u), spawn cmd)) <$> myU2WCommands') ++
+  [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
@@ -108,7 +108,6 @@ myKeys conf = Map.fromList $
     myFUAs'           = Map.toList myFUAs
     myLockScreenKeys' = Set.toList myLockScreenKeys
     myScreenLayouts'  = Map.toList myScreenLayouts
-    myU2WCommands'    = Map.toList $ myU2WCommands conf
     myWorkspaces'     = Set.toList myWorkspaces
 
 myScreenLayouts :: Map String (X ())
@@ -151,11 +150,22 @@ myFUAs = Map.fromList
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
 
-myU2WCommands :: XConfig Layout -> Map KeyMask String
-myU2WCommands conf = Map.fromList
-  [ ( shiftMask   , "~/.util/u2w/sshfs/start.sh" )
-  , ( controlMask , "~/.util/u2w/sshfs/stop.sh"  )
-  ]
+myU2WPrompt :: XConfig Layout -> X ()
+myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
+  myU2WPromptConf :: XPConfig
+  myU2WPromptConf = myXPromptConf
+    { defaultPrompter = const "[u2w] > "
+    , autoComplete    = Just 0
+    }
+  myU2WPromptOpts :: Map String (X ())
+  myU2WPromptOpts = Map.fromList
+    [ ( "rn: nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh nix-shell\"" )
+    , ( "rg: git-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh\"" )
+    , ( "ld: dev-shell@localhost" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
+    , ( "sm: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
+    , ( "su: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
+    ]
+  myU2WUtilsDir = "~/.util/u2w/"
 
 -- Wrapper type to map workspaces 
 data Workspace = Workspace
@@ -177,6 +187,7 @@ myPP = xmobarPP
   , ppUrgent  = xmobarColor myUrgentColor    mempty . wrap "!" "!"
   , ppSep     = " | "
   }
+
 
 -- auxiliary defs
 
@@ -239,6 +250,11 @@ myXPromptConf    = def
   , historySize  = 0
   }
 
+
 -- convenience defs
+
 altMask :: KeyMask
 altMask = mod1Mask
+
+noMask :: KeyMask
+noMask = 0
