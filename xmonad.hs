@@ -248,6 +248,12 @@ myXPromptConf    = def
   { font         = "xft:Droid Sans Mono-10:antialias=true"
   , height       = 25
   , historySize  = 0
+  , position     = Top
+  , borderColor  = myMainColorDark
+  , bgColor      = myMainColorDark
+  , alwaysHighlight = True
+  , bgHLight = myMainColorDark
+  , fgHLight = myUrgentColor
   }
 
 
