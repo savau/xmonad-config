@@ -44,7 +44,7 @@ main = do
   xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
-    --, focusFollowsMouse  = False
+  --, focusFollowsMouse  = False
     , focusedBorderColor = myMainColorDark
     , normalBorderColor  = "#000000"
     , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
@@ -89,8 +89,8 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart)
   , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
-  --, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
-  --, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
+--, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
+--, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
@@ -257,7 +257,7 @@ myXPromptConf    = def
   }
 
 
--- convenience defs
+-- convenience definitions
 
 altMask :: KeyMask
 altMask = mod1Mask
