@@ -159,8 +159,8 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "rd: dev-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh develop\"" )
-    , ( "rg: git-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh\"" )
+    [ ( "d: development-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh develop\"" )
+    , ( "r: shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh\"" )
     , ( "l: shell@localhost" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
     , ( "sm: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
     , ( "su: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
