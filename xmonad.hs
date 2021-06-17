@@ -159,11 +159,11 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "d: development-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh develop\"" )
-    , ( "r: shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh\"" )
-    , ( "l: shell@localhost" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
-    , ( "sm: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
-    , ( "su: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
+    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh develop\"" )
+    , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh nix-shell\"" )
+    , ( "l[ocal] : shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
+    , ( "sm [sshfs-mount] : mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
+    , ( "su [sshfs-unmount] : unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
     ]
   myU2WUtilsDir = "~/.util/u2w/"
 
