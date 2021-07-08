@@ -14,21 +14,23 @@ import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
 
 import XMonad.Prompt
-import XMonad.Prompt.XMonad
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
+import XMonad.Prompt.XMonad
+
+import qualified XMonad.StackSet as S
 
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
-import qualified XMonad.StackSet as S
-
 import Control.Monad (forM)
+
 import Data.List (intercalate)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import qualified Data.Set as Set
 import Data.Set (Set)
+
 import System.Exit
 import System.IO
 
