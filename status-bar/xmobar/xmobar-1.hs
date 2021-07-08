@@ -1,6 +1,6 @@
 Config
   {
-    font             = "xft:Droid Sans Mono-8:antialias=true"
+    font             = "xft:Liberation Mono for Powerline-8:antialias=true"
   , additionalFonts  = []     -- ^ List of alternative fonts
 --, wmClass :: String         -- ^ X11 WM_CLASS property value
 --, wmName  :: String         -- ^ X11 WM_NAME property value
