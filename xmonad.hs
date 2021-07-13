@@ -1,5 +1,16 @@
 {-# LANGUAGE RecordWildCards #-}
 
+import Control.Monad (forM)
+
+import Data.List (intercalate)
+import qualified Data.Map as Map
+import Data.Map (Map)
+import qualified Data.Set as Set
+import Data.Set (Set)
+
+import System.Exit
+import System.IO
+
 import XMonad
 
 import XMonad.Actions.SpawnOn (manageSpawn, spawnOn)
@@ -22,17 +33,6 @@ import qualified XMonad.StackSet as S
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
-
-import Control.Monad (forM)
-
-import Data.List (intercalate)
-import qualified Data.Map as Map
-import Data.Map (Map)
-import qualified Data.Set as Set
-import Data.Set (Set)
-
-import System.Exit
-import System.IO
 
 import Utils
 
