@@ -62,7 +62,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(app,(env,opts,mWorkspace)) -> spawnApplication app env opts mWorkspace) (Map.toList myStartupApplications) >> setWMName "LG3D"
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
@@ -98,7 +98,7 @@ myKeys conf = Map.fromList $
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
-  ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawn app)) <$> myFUAs') ++
+  ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
@@ -187,7 +187,7 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\app -> "pkill " <> app <> "; ") $ Map.keys myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
+myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
 
 myStatusBar :: String
 myStatusBar = "xmobar"
