@@ -1,16 +1,25 @@
 module Applications
   ( myStartupApplications, myFUAs
+  , spawnApplication
   ) where
 
+import Data.List (intercalate)
 import qualified Data.Map as Map
 import Data.Map (Map)
 
 import XMonad
 
+import XMonad.Actions.SpawnOn (spawnOn)
+
+
+type Application = String
+
+type ApplicationOptions = [String]
+
 
 -- | Applications that will be automatically launched after starting XMonad
 -- TODO: use `Map ([String], Maybe WorkspaceId)` to avoid duplicate launches
-myStartupApplications :: [(String, [String], Maybe WorkspaceId)]
+myStartupApplications :: [(Application, ApplicationOptions, Maybe WorkspaceId)]
 myStartupApplications =
   [ ("xfce4-power-manager"         , mempty         , mempty    )
   , ("volumeicon"                  , mempty         , mempty    )
@@ -40,3 +49,8 @@ myFUAs = Map.fromList
   , (xK_o, "octave --gui"                   )  -- GNU Octave
   , (xK_j, "idea"                           )  -- IntelliJ IDEA
   ]
+
+
+-- | Spawns a given application with given options and optionally on a given workspace
+spawnApplication :: Application -> ApplicationOptions -> Maybe WorkspaceId -> X ()
+spawnApplication app opts mWorkspace = maybe spawn spawnOn mWorkspace $ intercalate " " $ app : opts
