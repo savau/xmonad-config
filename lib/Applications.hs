@@ -18,20 +18,19 @@ type ApplicationOptions = [String]
 
 
 -- | Applications that will be automatically launched after starting XMonad
--- TODO: use `Map ([String], Maybe WorkspaceId)` to avoid duplicate launches
-myStartupApplications :: [(Application, ApplicationOptions, Maybe WorkspaceId)]
-myStartupApplications =
-  [ ("xfce4-power-manager"         , mempty         , mempty    )
-  , ("volumeicon"                  , mempty         , mempty    )
-  , ("nm-applet"                   , mempty         , mempty    )
-  , ("blueman-applet"              , mempty         , mempty    )
---, ("pamac-tray"                  , mempty         , mempty    )  -- TODO: launch this iff on Arch Linux
-  , ("keepassxc"                   , mempty         , mempty    )
-  , ("QT_SCALE_FACTOR=1 megasync"  , mempty         , mempty    )  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
-  , ("LC_TIME=root.UTF-8 birdtray" , mempty         , mempty    )
---, ("thunderbird"                 , mempty         , Just "10" )
---, ("zulip"                       , mempty         , Just "9"  )
---, ("signal-desktop-beta"         , mempty         , Just "8"  )
+myStartupApplications :: Map Application (ApplicationOptions, Maybe WorkspaceId)
+myStartupApplications = Map.fromList
+  [ ("xfce4-power-manager"         , ( mempty, mempty    ) )
+  , ("volumeicon"                  , ( mempty, mempty    ) )
+  , ("nm-applet"                   , ( mempty, mempty    ) )
+  , ("blueman-applet"              , ( mempty, mempty    ) )
+--, ("pamac-tray"                  , ( mempty, mempty    ) )  -- TODO: launch this iff on Arch Linux
+  , ("keepassxc"                   , ( mempty, mempty    ) )
+  , ("QT_SCALE_FACTOR=1 megasync"  , ( mempty, mempty    ) )  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
+  , ("LC_TIME=root.UTF-8 birdtray" , ( mempty, mempty    ) )
+--, ("thunderbird"                 , ( mempty, Just "10" ) )
+--, ("zulip"                       , ( mempty, Just "9"  ) )
+--, ("signal-desktop-beta"         , ( mempty, Just "8"  ) )
   ]
 
 -- | Frequently used applications that can be launched via Mod+Shift+<key>
