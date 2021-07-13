@@ -1,4 +1,4 @@
-module Utils
+module Utils.KeyMask
   ( altMask, noMask
   ) where
 

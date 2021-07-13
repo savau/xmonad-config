@@ -2,7 +2,6 @@
 
 import Control.Monad (forM)
 
-import Data.List (intercalate)
 import qualified Data.Map as Map
 import Data.Map (Map)
 import qualified Data.Set as Set
@@ -13,7 +12,7 @@ import System.IO
 
 import XMonad
 
-import XMonad.Actions.SpawnOn (manageSpawn, spawnOn)
+import XMonad.Actions.SpawnOn (manageSpawn)
 
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -35,7 +34,7 @@ import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 import Applications
-import Utils
+import Utils.KeyMask
 
 
 myXMonadDir = "~/.xmonad/"
@@ -63,10 +62,8 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ startApplication myStartupApplications >> setWMName "LG3D"
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(x,y,z) -> spawnApplication x y z) myStartupApplications >> setWMName "LG3D"
     }
-    where
-      startApplication (app, opts, mWorkspace) = maybe spawn spawnOn mWorkspace $ intercalate " " $ app : opts
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
