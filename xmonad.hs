@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards #-}
 
-import Control.Monad (forM)
+import Control.Monad (ap, forM)
 
 import qualified Data.Map as Map
 import Data.Map (Map)
@@ -62,7 +62,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(x,(y,z)) -> spawnApplication x y z) (Map.toList myStartupApplications) >> setWMName "LG3D"
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (uncurry $ (`ap` snd) . (. fst) . spawnApplication) (Map.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
@@ -187,7 +187,7 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\(app,_) -> "pkill " <> app <> "; ") $ Map.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
+myXMonadRestart = (concatMap (\app -> "pkill " <> app <> "; ") $ Map.keys myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
 
 myStatusBar :: String
 myStatusBar = "xmobar"
