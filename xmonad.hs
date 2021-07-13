@@ -34,6 +34,8 @@ import Data.Set (Set)
 import System.Exit
 import System.IO
 
+import Utils
+
 
 myXMonadDir = "~/.xmonad/"
 
@@ -258,12 +260,3 @@ myXPromptConf    = def
   , bgHLight = myMainColorDark
   , fgHLight = myUrgentColor
   }
-
-
--- convenience definitions
-
-altMask :: KeyMask
-altMask = mod1Mask
-
-noMask :: KeyMask
-noMask = 0
