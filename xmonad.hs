@@ -62,7 +62,7 @@ main = do
       { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
       }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (uncurry $ (`ap` snd) . (. fst) . spawnApplication) (Map.toList myStartupApplications) >> setWMName "LG3D"
+    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ (\(app,(env,opts,mWorkspace)) -> spawnApplication app env opts mWorkspace) (Map.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
