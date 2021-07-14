@@ -11,6 +11,7 @@ import qualified Data.Map as Map
 import Data.Map (Map)
 import qualified Data.Set as Set
 import Data.Set (Set)
+import Data.Tuple.Curry
 
 import XMonad
 
@@ -32,7 +33,7 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 
 -- | Applications that will be automatically launched after starting XMonad
 myStartupApplications :: Set Application
-myStartupApplications = (Set.fromList . fmap (\(appName,appEnvironment,appOptions,appWorkspace) -> Application{..}))
+myStartupApplications = (Set.fromList . fmap (uncurryN Application))
   [ ( "xfce4-power-manager"
     , mempty, mempty, mempty
     )
