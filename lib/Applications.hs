@@ -32,7 +32,6 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 
 -- | Applications that will be automatically launched after starting XMonad
 myStartupApplications :: Set Application
--- Map Application (ApplicationEnvironment, ApplicationOptions, Maybe WorkspaceId)
 myStartupApplications = (Set.fromList . fmap (\(appName,appEnvironment,appOptions,appWorkspace) -> Application{..}))
   [ ("xfce4-power-manager" , mempty, mempty, mempty    )
   , ("volumeicon"          , mempty, mempty, mempty    )
@@ -50,15 +49,56 @@ myStartupApplications = (Set.fromList . fmap (\(appName,appEnvironment,appOption
 -- | Frequently used applications that can be launched via Mod+Shift+<key>
 myFUAs :: Map KeySym Application
 myFUAs = Map.fromList
-  [ ( xK_f, Application "thunar"         mempty mempty mempty )  -- file manager
-  , ( xK_k, Application "keepassxc"      mempty mempty mempty )  -- password manager
-  , ( xK_w, Application "firefox"        mempty mempty mempty )  -- web browser
-  , ( xK_m, Application "thunderbird"    (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty )  -- mail client
-  , ( xK_z, Application "zulip"          mempty mempty mempty )  -- chat client
---, ( xK_c, Application "google-calendar-dark" mempty mempty mempty )  -- calendar client
-  , ( xK_s, Application "signal-desktop" mempty mempty mempty )  -- messenger client
---, ( xK_p, Application "pidgin" mempty mempty mempty )  -- XMPP client
-  , ( xK_t, Application "texstudio"      mempty mempty mempty )  -- tex editor
-  , ( xK_o, Application "octave"         mempty ["--gui"] mempty )  -- GNU Octave
-  , ( xK_j, Application "idea"           mempty mempty mempty )  -- IntelliJ IDEA
+  [ ( xK_f  -- [F]ile manager
+    , Application "thunar"
+      mempty mempty mempty
+    )
+  , ( xK_k  -- [K]eepassxc password manager
+    , Application "keepassxc"
+      mempty mempty mempty
+    )
+
+-- web applications
+  , ( xK_w  -- [W]eb browser
+    , Application "firefox"
+      mempty mempty mempty
+    )
+  , ( xK_m  -- -[M]ail client
+    , Application "thunderbird"
+      (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
+    )
+
+-- chat applications
+--, ( xK_c  -- [C]alendar client
+--  , Application "google-calendar-dark"
+--    mempty mempty mempty
+--  )
+
+-- chat applications
+  , ( xK_z  -- [Z]ulip chat client
+    , Application "zulip"
+      mempty mempty mempty
+    )
+  , ( xK_s  -- [S]ignal messenger client
+    , Application "signal-desktop"
+      mempty mempty mempty
+    )
+--, ( xK_p  -- [P]idgin XMPP client
+--  , Application "pidgin"
+--    mempty mempty mempty
+--  )
+
+-- IDEs
+  , ( xK_t  -- [T]eX IDE
+    , Application "texstudio"
+      mempty mempty mempty
+    )
+  , ( xK_i  -- IntelliJ [I]DEA
+    , Application "idea"
+      mempty mempty mempty
+    )
+--, ( xK_o  -- GNU [O]ctave
+--  , Application "octave"
+--    mempty ["--gui"] mempty
+--  )
   ]
