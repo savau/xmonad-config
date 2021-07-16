@@ -45,7 +45,7 @@ mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 main = do
   nScreens <- countScreens
-  xmprocs  <- sequence $ (\n -> spawnPipe $ myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
+  xmprocs  <- sequence $ (\n -> spawnPipe $ "pingcount=10; while [ $pingcount -gt 0 ]; do ping -c 1 192.168.0.1; rc=$?; if [[ $rc -eq 0 ]]; then ((pingcount = 0)); fi; ((pingcount = pingcount - 1)); sleep 0.5; done; " <> myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
   --, focusFollowsMouse  = False
