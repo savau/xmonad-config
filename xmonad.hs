@@ -133,6 +133,7 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh nix-shell develop\"" )
     , ( "z[sh] : zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh nix-shell zsh\"" )
     , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh nix-shell\"" )
+    , ( "p[g_top] : pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
     , ( "l[ocal] : shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
     , ( "sm [sshfs-mount] : mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
     , ( "su [sshfs-unmount] : unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
