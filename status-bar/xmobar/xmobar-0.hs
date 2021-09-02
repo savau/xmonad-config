@@ -6,7 +6,7 @@ Config
 --, wmName  :: String         -- ^ X11 WM_NAME property value
   , bgColor          = "black"
   , fgColor          = "grey"
-  , position         = TopW L 92
+  , position         = TopW L 90
   , textOffset       = -1
   , textOffsets      = []     -- ^ List of offsets for additionalFonts
   , iconOffset       = -1
