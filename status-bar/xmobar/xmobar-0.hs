@@ -6,7 +6,7 @@ Config
 --, wmName  :: String         -- ^ X11 WM_NAME property value
   , bgColor          = "black"
   , fgColor          = "grey"
-  , position         = TopW L 90
+  , position         = TopW L 92
   , textOffset       = -1
   , textOffsets      = []     -- ^ List of offsets for additionalFonts
   , iconOffset       = -1
@@ -88,6 +88,6 @@ Config
     ]
   , sepChar          = "%"
   , alignSep         = "}{"
-  , template         = " %StdinReader% }{ %multicpu% - %coretemp% | %memory% - %swap% | %dynnetwork% - %wlp0s20f3wi% | %battery% | %uname%        %EDDM% | <fc=#ffffff>%date%</fc> | "
+  , template         = " %StdinReader% }{ %multicpu% - %coretemp% | %memory% - %swap% | %battery% | %dynnetwork% | %EDDM% | %date% | "
   , verbose          = False  -- ^ Emit additional debug messages
   }
