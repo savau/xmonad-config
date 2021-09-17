@@ -130,7 +130,7 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --command develop\"" )
+    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --dir u2w --command develop\"" )
     , ( "z[sh] : zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --command zsh\"" )
     , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell\"" )
     , ( "p[g_top] : pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
