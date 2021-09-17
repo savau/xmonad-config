@@ -30,7 +30,7 @@ import XMonad.Prompt.XMonad
 import qualified XMonad.StackSet as S
 
 import XMonad.Util.EZConfig (additionalKeys)
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Run (runProcessWithInput, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 import Applications
@@ -45,7 +45,8 @@ mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 main = do
   nScreens <- countScreens
-  xmprocs  <- sequence $ (\n -> spawnPipe $ "pingcount=10; while [ $pingcount -gt 0 ]; do ping -n -c 1 1.1.1.1; rc=$?; if [[ $rc -eq 0 ]]; then ((pingcount = 0)); fi; ((pingcount = pingcount - 1)); sleep 0.5; done; " <> myStatusBar <> " " <> myXMobarConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
+  randrConfig <- head . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
+  xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     { modMask            = myModMask
   --, focusFollowsMouse  = False
@@ -188,12 +189,10 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill " <> myStatusBar <> "; xmonad --restart"
+myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill xmobar; xmonad --restart"
 
-myStatusBar :: String
-myStatusBar = "xmobar"
-myXMobarConfig :: Int -> String
-myXMobarConfig n = myStatusBarDir <> "xmobar/xmobar-" <> show n <> ".hs"
+myXMobarConfig :: String -> Int -> String
+myXMobarConfig randrConfig nScreens = myStatusBarDir <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
 
 mySystemTray :: String
 mySystemTray = "stalonetray"
@@ -202,6 +201,9 @@ mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
 
 mySystemKeys :: Set KeySym
 mySystemKeys = Set.singleton xK_equal
+
+myCheckNetwork :: String
+myCheckNetwork = "pingcount=10; while [ $pingcount -gt 0 ]; do ping -n -c 1 1.1.1.1; rc=$?; if [[ $rc -eq 0 ]]; then ((pingcount = 0)); fi; ((pingcount = pingcount - 1)); sleep 0.5; done; "
 
 myXMonadSysPrompt :: X ()
 myXMonadSysPrompt = spawn "xfce4-session-logout"
