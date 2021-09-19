@@ -34,13 +34,9 @@ import XMonad.Util.Run (runProcessWithInput, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 import Applications
+import qualified Utils.Dir as Dir
 import Utils.KeyMask
 
-
-myXMonadDir = "~/.xmonad/"
-
-myStatusBarDir  = myXMonadDir <> "status-bar/"
-mySystemTrayDir = myXMonadDir <> "system-tray/"
 
 
 main = do
@@ -192,12 +188,12 @@ myXMonadRestart :: String
 myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill xmobar; xmonad --restart"
 
 myXMobarConfig :: String -> Int -> String
-myXMobarConfig randrConfig nScreens = myStatusBarDir <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
+myXMobarConfig randrConfig nScreens = Dir.statusBar <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
 
 mySystemTray :: String
 mySystemTray = "stalonetray"
 mySysTrayConf :: Int -> String
-mySysTrayConf n = mySystemTrayDir <> "stalonetray/stalonetrayrc-" <> show n
+mySysTrayConf n = Dir.systemTray <> "stalonetray/stalonetrayrc-" <> show n
 
 mySystemKeys :: Set KeySym
 mySystemKeys = Set.singleton xK_equal
