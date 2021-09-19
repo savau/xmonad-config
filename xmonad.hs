@@ -206,17 +206,17 @@ myCheckNetwork :: String
 myCheckNetwork = "pingcount=10; while [ $pingcount -gt 0 ]; do ping -n -c 1 1.1.1.1; rc=$?; if [[ $rc -eq 0 ]]; then ((pingcount = 0)); fi; ((pingcount = pingcount - 1)); sleep 0.5; done; "
 
 myXMonadSysPrompt :: X ()
-myXMonadSysPrompt = spawn "xfce4-session-logout"
--- obsolete with xfce4-session-logout
---myXMonadSysPrompt = xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 } where
---  mySysPromptOpts :: MonadIO m => Map String (m ())
---  mySysPromptOpts = Map.fromList
---    [ ( "Logout"       , io $ exitWith ExitSuccess)  -- FIXME: does not work with xfce4
---    , ( "Suspend"      , spawn "systemctl suspend")
---    , ( "Hibernate"    , spawn "systemctl hibernate")
---    , ( "Reboot"       , spawn "systemctl reboot")
---    , ( "Poweroff"     , spawn "systemctl poweroff")
---    ]
+myXMonadSysPrompt = myXMonadSysPromptXfce where
+  myXMonadSysPromptXfce = spawn "xfce4-session-logout"
+  myXMonadSysPromptXmonad = xmonadPromptC (Map.toList mySysPromptOpts) myXPromptConf{ defaultPrompter = const "System: ", autoComplete = Just 0 } where
+    mySysPromptOpts :: MonadIO m => Map String (m ())
+    mySysPromptOpts = Map.fromList
+      [ ( "Logout"       , io $ exitWith ExitSuccess)  -- FIXME: does not work with xfce4
+      , ( "Suspend"      , spawn "systemctl suspend")
+      , ( "Hibernate"    , spawn "systemctl hibernate")
+      , ( "Reboot"       , spawn "systemctl reboot")
+      , ( "Poweroff"     , spawn "systemctl poweroff")
+      ]
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
