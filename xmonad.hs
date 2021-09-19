@@ -38,19 +38,19 @@ import qualified Utils.Dir as Dir
 import Utils.KeyMask
 
 
-
 main = do
   nScreens <- countScreens
   randrConfig <- head . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
   xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
-    { modMask            = myModMask
+    {
+      modMask            = myModMask
   --, focusFollowsMouse  = False
     , focusedBorderColor = myMainColorDark
     , normalBorderColor  = "#000000"
     , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
 
-    -- key bindings
+    -- Key bindings
     , keys = myKeys
 
     -- Hooks, layouts
