@@ -34,8 +34,8 @@ import XMonad.Util.Run (runProcessWithInput, spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
 
 import Applications
-import qualified Utils.Dir as Dir
-import Utils.KeyMask
+import qualified Utils.Dir     as Dir
+import qualified Utils.KeyMask as KeyMask
 
 
 main = do
@@ -88,9 +88,9 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart)
   , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
---, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
---, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
-  , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
+--, ((myModMask .|. KeyMask.altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
+--, ((myModMask .|. KeyMask.altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
+  , ((myModMask .|. KeyMask.altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
