@@ -96,7 +96,7 @@ myKeys conf = Map.fromList $
   [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
-  [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
+--[ ((myModMask, xK_u), myU2WPrompt conf) ] ++
   [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
@@ -118,24 +118,24 @@ myLockScreenKeys = Set.fromList
   , xK_ssharp
   ]
 
-myU2WPrompt :: XConfig Layout -> X ()
-myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
-  myU2WPromptConf :: XPConfig
-  myU2WPromptConf = myXPromptConf
-    { defaultPrompter = const "[u2w] > "
-    , autoComplete    = Just 0
-    }
-  myU2WPromptOpts :: Map String (X ())
-  myU2WPromptOpts = Map.fromList
-    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --dir u2w --command develop\"" )
-    , ( "z[sh] : zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --command zsh\"" )
-    , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell\"" )
-    , ( "p[g_top] : pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
-    , ( "l[ocal] : shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
-    , ( "sm [sshfs-mount] : mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
-    , ( "su [sshfs-unmount] : unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
-    ]
-  myU2WUtilsDir = "~/.util/u2w/"
+--myU2WPrompt :: XConfig Layout -> X ()
+--myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
+--  myU2WPromptConf :: XPConfig
+--  myU2WPromptConf = myXPromptConf
+--    { defaultPrompter = const "[u2w] > "
+--    , autoComplete    = Just 0
+--    }
+--  myU2WPromptOpts :: Map String (X ())
+--  myU2WPromptOpts = Map.fromList
+--    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --dir u2w --command develop\"" )
+--    , ( "z[sh] : zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell --command zsh\"" )
+--    , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --shell nix-shell\"" )
+--    , ( "p[g_top] : pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
+--    , ( "l[ocal] : shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
+--    , ( "sm [sshfs-mount] : mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
+--    , ( "su [sshfs-unmount] : unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
+--    ]
+--  myU2WUtilsDir = "~/.util/u2w/"
 
 -- Wrapper type to map workspaces 
 data Workspace = Workspace
