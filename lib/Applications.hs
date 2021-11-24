@@ -104,7 +104,7 @@ myFUAs = Map.fromList
     )
   , ( xK_s  -- [S]ignal messenger client
     , Application "signal-desktop"
-      mempty mempty mempty
+      mempty ["--use-tray-icon"] mempty
     )
 --, ( xK_p  -- [P]idgin XMPP client
 --  , Application "pidgin"
