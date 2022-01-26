@@ -4,6 +4,7 @@ import Control.Monad (ap, forM)
 
 import qualified Data.Map as Map
 import Data.Map (Map)
+import Data.Maybe
 import qualified Data.Set as Set
 import Data.Set (Set)
 
@@ -40,7 +41,7 @@ import qualified Utils.KeyMask as KeyMask
 
 main = do
   nScreens <- countScreens
-  randrConfig <- head . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
+  randrConfig <- fromMaybe "home" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
   xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     {
