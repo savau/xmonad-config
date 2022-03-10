@@ -94,7 +94,7 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. KeyMask.altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
-  [ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
+--[ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
@@ -113,28 +113,22 @@ myKeys conf = Map.fromList $
 myScreenLayouts :: Map String (X ())
 myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
 
-myLockScreenKeys :: Set KeySym
-myLockScreenKeys = Set.fromList
-  [ xK_minus
-  , xK_ssharp
-  ]
-
 myU2WPrompt :: XConfig Layout -> X ()
 myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
   myU2WPromptConf :: XPConfig
   myU2WPromptConf = myXPromptConf
-    { defaultPrompter = const "[u2w] > "
+    { defaultPrompter = const "Uni2work: "
     , autoComplete    = Just 0
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "d[evelop] : develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop u2w\"" )
-    , ( "z[sh] : zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --project u2w\"" )
-    , ( "n[ix-shell] : nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --nix-shell u2w\"" )
-    , ( "p[g_top] : pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
-    , ( "l[ocal] : shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
-    , ( "sm [sshfs-mount] : mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
-    , ( "su [sshfs-unmount] : unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
+    [ ( "d[evelop]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop u2w\"" )
+    , ( "z[sh]: zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --project u2w\"" )
+    , ( "n[ix-shell]: nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --nix-shell u2w\"" )
+    , ( "p[g_top]: pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
+    , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
+    , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
+    , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
     ]
   myU2WUtilsDir = "~/.util/u2w/"
 
@@ -196,8 +190,17 @@ mySystemTray = "stalonetray"
 mySysTrayConf :: Int -> String
 mySysTrayConf n = Dir.systemTray <> "stalonetray/stalonetrayrc-" <> show n
 
+myLockScreenKeys :: Set KeySym
+myLockScreenKeys = Set.fromList
+  [ xK_minus   -- us layout
+  , xK_ssharp  -- german layout
+  ]
+
 mySystemKeys :: Set KeySym
-mySystemKeys = Set.singleton xK_equal
+mySystemKeys = Set.fromList
+  [ xK_equal  -- us layout
+  , 65105     -- german layout; dead acute
+  ]
 
 myCheckNetwork :: String
 myCheckNetwork = "pingcount=10; while [ $pingcount -gt 0 ]; do ping -n -c 1 1.1.1.1; rc=$?; if [[ $rc -eq 0 ]]; then ((pingcount = 0)); fi; ((pingcount = pingcount - 1)); sleep 0.5; done; "
