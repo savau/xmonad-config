@@ -41,7 +41,7 @@ import qualified Utils.KeyMask as KeyMask
 
 main = do
   nScreens <- countScreens
-  randrConfig <- fromMaybe "home" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
+  randrConfig <- fromMaybe "main" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
   xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   xmonad $ docks def
     {
