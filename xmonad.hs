@@ -1,6 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
 
-import Control.Monad (ap, forM)
+import Control.Monad
 
 import qualified Data.Map as Map
 import Data.Map (Map)
@@ -12,6 +13,8 @@ import DBus.Client
 
 import System.Exit
 import System.IO
+import System.Log.DBus.Server
+import System.Log.Logger
 
 import XMonad
 
@@ -45,7 +48,6 @@ import qualified Utils.KeyMask as KeyMask
 main = do
   nScreens <- countScreens
   randrConfig <- fromMaybe "main" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
---xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
   spawn "taffybar"
   xmonad . docks . ewmh $ def
     { modMask            = myModMask
@@ -59,8 +61,6 @@ main = do
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-  --, startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
-  --, startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
@@ -94,7 +94,6 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. KeyMask.altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
---[ ((myModMask, xK_s), spawn "xfce4-screenshooter") ] ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
