@@ -61,6 +61,7 @@ main = do
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
+    , startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
