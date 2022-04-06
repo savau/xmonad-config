@@ -8,6 +8,8 @@ import Data.Maybe
 import qualified Data.Set as Set
 import Data.Set (Set)
 
+import DBus.Client
+
 import System.Exit
 import System.IO
 
@@ -16,6 +18,7 @@ import XMonad
 import XMonad.Actions.SpawnOn (manageSpawn)
 
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 
@@ -42,11 +45,10 @@ import qualified Utils.KeyMask as KeyMask
 main = do
   nScreens <- countScreens
   randrConfig <- fromMaybe "main" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
-  xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
-  xmonad $ docks def
-    {
-      modMask            = myModMask
-  --, focusFollowsMouse  = False
+--xmprocs  <- sequence $ (\n -> spawnPipe $ myCheckNetwork <> "xmobar " <> myXMobarConfig randrConfig n <> " --screen " <> show n) <$> [0..pred nScreens]
+  spawn "taffybar"
+  xmonad . docks . ewmh $ def
+    { modMask            = myModMask
     , focusedBorderColor = myMainColorDark
     , normalBorderColor  = "#000000"
     , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
@@ -56,17 +58,15 @@ main = do
 
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
-    , logHook     = dynamicLogWithPP myPP
-      { ppOutput  = \str -> mapM_ (\xmproc -> hPutStrLn xmproc str) xmprocs
-      }
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
-    , startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
+  --, startupHook = spawn (mySystemTray <> " --config " <> mySysTrayConf (pred nScreens)) >> mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
+  --, startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
   [ 
-    ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
+    ((myModMask, xK_Return), spawn "xterm") -- spawn $ XMonad.terminal conf)
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows S.focusDown)
   , ((myModMask, xK_Up    ), windows S.focusUp)
