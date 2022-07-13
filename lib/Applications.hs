@@ -96,8 +96,6 @@ myFUAs = Map.fromList
     , Application "firefox"
       mempty ["-P matrix", "-kiosk"] mempty
     )
-
--- chat applications
   , ( xK_z  -- [Z]ulip chat client
     , Application "zulip"
       mempty mempty mempty
