@@ -91,6 +91,12 @@ myFUAs = Map.fromList
       (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
     )
 
+-- development and system administration applications
+  , ( xK_g  -- [G]rafana
+    , Application "firefox"
+      mempty ["-P grafana", "-kiosk"] mempty
+    )
+
 -- chat applications
   , ( xK_e  -- [E]lement (matrix)
     , Application "firefox"
