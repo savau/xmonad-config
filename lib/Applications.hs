@@ -94,7 +94,7 @@ myFUAs = Map.fromList
 -- chat applications
   , ( xK_e  -- [E]lement (matrix)
     , Application "firefox"
-      mempty ["-P matrix -kiosk"] mempty
+      mempty ["-P matrix", "-kiosk"] mempty
     )
 
 -- chat applications
