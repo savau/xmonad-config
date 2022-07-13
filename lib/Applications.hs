@@ -92,10 +92,10 @@ myFUAs = Map.fromList
     )
 
 -- chat applications
---, ( xK_c  -- [C]alendar client
---  , Application "google-calendar-dark"
---    mempty mempty mempty
---  )
+  , ( xK_e  -- [E]lement (matrix)
+    , Application "firefox"
+      mempty ["-P matrix -kiosk"] mempty
+    )
 
 -- chat applications
   , ( xK_z  -- [Z]ulip chat client
