@@ -180,7 +180,7 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill xmobar; xmonad --restart"
+myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill taffybar; xmonad --restart"
 
 myXMobarConfig :: String -> Int -> String
 myXMobarConfig randrConfig nScreens = Dir.statusBar <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
