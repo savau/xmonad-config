@@ -58,12 +58,9 @@ myStartupApplications = (Set.fromList . fmap (uncurryN Application))
   , ( "birdtray"
     , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
     )
---, ( "thunderbird"
---  , mempty, mempty, Just "10"
---  )
---, ( "zulip"
---  , mempty, mempty, Just "9"
---  )
+  , ( "zulip"
+    , mempty, mempty, mempty
+    )
 --, ( "signal-desktop-beta"
 --  , mempty, mempty, Just "8"
 --  )
@@ -120,10 +117,10 @@ myFUAs = Map.fromList
     , Application "texstudio"
       mempty mempty mempty
     )
-  , ( xK_i  -- IntelliJ [I]DEA
-    , Application "idea"
-      mempty mempty mempty
-    )
+--, ( xK_i  -- IntelliJ [I]DEA
+--  , Application "idea"
+--    mempty mempty mempty
+--  )
 --, ( xK_o  -- GNU [O]ctave
 --  , Application "octave"
 --    mempty ["--gui"] mempty
