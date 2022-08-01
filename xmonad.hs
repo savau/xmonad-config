@@ -125,7 +125,7 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     [ ( "d[evelop]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop u2w\"" )
     , ( "z[sh]: zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --project u2w\"" )
     , ( "n[ix-shell]: nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --nix-shell u2w\"" )
-    , ( "p[g_top]: pg_top@uniworxdb2" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/pg_top.sh\"" )
+    , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/all_servers.sh\"" )
     , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
     , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
     , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
