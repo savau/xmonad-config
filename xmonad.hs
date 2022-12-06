@@ -122,8 +122,8 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "d[evelop] u[2w]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop u2w\"" )
-    , ( "d[evelop] f[radrive]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop fradrive\"" )
+    [ ( "du [develop u2w]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop u2w\"" )
+    , ( "df [develop fradrive]: develop-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --develop fradrive\"" )
     , ( "z[sh]: zsh@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --project u2w\"" )
     , ( "n[ix-shell]: nix-shell@uni2work-dev1" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/uni2work-dev1.sh --nix-shell u2w\"" )
     , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/all_servers.sh\"" )
