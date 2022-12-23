@@ -67,14 +67,14 @@ main = do
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
   [ 
-    ((myModMask, xK_Return), spawn "xterm") -- spawn $ XMonad.terminal conf)
+    ((myModMask, xK_Return), spawn "xterm -e tmux") -- spawn $ XMonad.terminal conf)
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows S.focusDown)
   , ((myModMask, xK_Up    ), windows S.focusUp)
   , ((myModMask, xK_comma ), sendMessage $ IncMasterN (-1))
   , ((myModMask, xK_period), sendMessage $ IncMasterN   1 )
   , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-  , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto allWindows)
+  , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto  allWindows)
   , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
 --, ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
   , ((myModMask, xK_space ), withFocused $ windows . S.sink)
