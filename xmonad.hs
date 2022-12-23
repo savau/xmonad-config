@@ -60,7 +60,7 @@ main = do
 
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
-    , manageHook  = manageHook def <+> manageDocks <+> manageSpawn
+    , manageHook  = manageHook def <+> manageDocks <+> manageSpawn <+> myManageFloats
     , startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
@@ -109,6 +109,11 @@ myKeys conf = Map.fromList $
     myLockScreenKeys' = Set.toList myLockScreenKeys
     myScreenLayouts'  = Map.toList myScreenLayouts
     myWorkspaces'     = Set.toList myWorkspaces
+
+myManageFloats :: ManageHook
+myManageFloats = composeAll
+  [ className =? "megasync" --> doFloat
+  ]
 
 myScreenLayouts :: Map String (X ())
 myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
