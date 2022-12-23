@@ -112,7 +112,7 @@ myKeys conf = Map.fromList $
 
 myManageFloats :: ManageHook
 myManageFloats = composeAll
-  [ className =? "megasync" --> doFloat
+  [ className =? "MEGAsync" --> doFloat
   ]
 
 myScreenLayouts :: Map String (X ())
