@@ -37,9 +37,9 @@ myStartupApplications = (Set.fromList . fmap (uncurryN Application))
   [ ( "xfce4-power-manager"
     , mempty, mempty, mempty
     )
-  , ( "volumeicon"
-    , mempty, mempty, mempty
-    )
+--, ( "volumeicon"
+--  , mempty, mempty, mempty
+--  )
   , ( "nm-applet"
     , mempty, mempty, mempty
     )
@@ -49,18 +49,18 @@ myStartupApplications = (Set.fromList . fmap (uncurryN Application))
 --, ( "pamac-tray"  -- TODO: launch this iff on Arch Linux
 --  , mempty, mempty, mempty
 --  )
-  , ( "keepassxc"
-    , mempty, mempty, mempty
-    )
+--, ( "keepassxc"
+--  , mempty, mempty, mempty
+--  )
   , ( "megasync"
     , Map.fromList [ ("QT_SCALE_FACTOR","1") ], mempty, mempty  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
     )
   , ( "birdtray"
     , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
     )
-  , ( "zulip"
-    , mempty, mempty, mempty
-    )
+--, ( "zulip"
+--  , mempty, mempty, mempty
+--  )
 --, ( "signal-desktop-beta"
 --  , mempty, mempty, Just "8"
 --  )
@@ -89,16 +89,16 @@ myFUAs = Map.fromList
     )
 
 -- development and system administration applications
-  , ( xK_g  -- [G]rafana
-    , Application "firefox"
-      mempty ["-P grafana", "-kiosk"] mempty
-    )
+--, ( xK_g  -- [G]rafana
+--  , Application "firefox"
+--    mempty ["-P grafana", "-kiosk"] mempty
+--  )
 
 -- chat applications
-  , ( xK_e  -- [E]lement (matrix)
-    , Application "firefox"
-      mempty ["-P matrix", "-kiosk"] mempty
-    )
+--, ( xK_e  -- [E]lement (matrix)
+--  , Application "firefox"
+--    mempty ["-P matrix", "-kiosk"] mempty
+--  )
   , ( xK_z  -- [Z]ulip chat client
     , Application "zulip"
       mempty mempty mempty
