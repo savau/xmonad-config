@@ -33,8 +33,9 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 
 -- | Applications that will be automatically launched after starting XMonad
 myStartupApplications :: Set Application
-myStartupApplications = (Set.fromList . fmap (uncurryN Application))
-  [
+myStartupApplications = Set.empty
+--(Set.fromList . fmap (uncurryN Application))
+--[
 --  ( "xfce4-power-manager"
 --  , mempty, mempty, mempty
 --  )
@@ -65,7 +66,7 @@ myStartupApplications = (Set.fromList . fmap (uncurryN Application))
 --, ( "signal-desktop-beta"
 --  , mempty, mempty, Just "8"
 --  )
-  ]
+--]
 
 -- | Frequently used applications that can be launched via Mod+Shift+<key>
 myFUAs :: Map KeySym Application
