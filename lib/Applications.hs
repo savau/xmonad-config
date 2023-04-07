@@ -34,30 +34,31 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 -- | Applications that will be automatically launched after starting XMonad
 myStartupApplications :: Set Application
 myStartupApplications = (Set.fromList . fmap (uncurryN Application))
-  [ ( "xfce4-power-manager"
-    , mempty, mempty, mempty
-    )
+  [
+--  ( "xfce4-power-manager"
+--  , mempty, mempty, mempty
+--  )
 --, ( "volumeicon"
 --  , mempty, mempty, mempty
 --  )
-  , ( "nm-applet"
-    , mempty, mempty, mempty
-    )
-  , ( "blueman-applet"
-    , mempty, mempty, mempty
-    )
+--, ( "nm-applet"
+--  , mempty, mempty, mempty
+--  )
+--, ( "blueman-applet"
+--  , mempty, mempty, mempty
+--  )
 --, ( "pamac-tray"  -- TODO: launch this iff on Arch Linux
 --  , mempty, mempty, mempty
 --  )
 --, ( "keepassxc"
 --  , mempty, mempty, mempty
 --  )
-  , ( "megasync"
-    , Map.fromList [ ("QT_SCALE_FACTOR","1") ], mempty, mempty  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
-    )
-  , ( "birdtray"
-    , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
-    )
+--, ( "megasync"
+--  , Map.fromList [ ("QT_SCALE_FACTOR","1") ], mempty, mempty  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
+--  )
+--, ( "birdtray"
+--  , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
+--  )
 --, ( "zulip"
 --  , mempty, mempty, mempty
 --  )
