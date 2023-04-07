@@ -48,7 +48,7 @@ import qualified Utils.KeyMask as KeyMask
 main = do
   nScreens <- countScreens
   randrConfig <- fromMaybe "main" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
-  spawn "taffybar"
+  -- spawn "taffybar"
   xmonad . docks . ewmh $ def
     { modMask            = myModMask
     , focusedBorderColor = myMainColorDark
@@ -67,7 +67,7 @@ main = do
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
   [ 
-    ((myModMask, xK_Return), spawn "xterm -e tmux") -- spawn $ XMonad.terminal conf)
+    ((myModMask, xK_Return), spawn "xterm -e tmux")
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows S.focusDown)
   , ((myModMask, xK_Up    ), windows S.focusUp)
@@ -127,8 +127,8 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
     }
   myU2WPromptOpts :: Map String (X ())
   myU2WPromptOpts = Map.fromList
-    [ ( "u2w: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop u2w\"" )
-    , ( "fradrive: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop fradrive\"" )
+    [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop u2w\"" )
+    , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop fradrive\"" )
 --  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
 --  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
 --  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/all_servers.sh\"" )
@@ -186,7 +186,8 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill taffybar; xmonad --restart"
+myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "xmonad --restart"
+-- myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill taffybar; xmonad --restart"
 
 myXMobarConfig :: String -> Int -> String
 myXMobarConfig randrConfig nScreens = Dir.statusBar <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
