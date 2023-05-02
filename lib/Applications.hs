@@ -84,6 +84,10 @@ myFUAs = Map.fromList
     , Application "firefox"
       mempty mempty mempty
     )
+  , ( xK_c  -- [C]hromium
+    , Application "chromium"
+      mempty mempty mempty
+    )
   , ( xK_m  -- -[M]ail client
     , Application "thunderbird"
       (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
@@ -100,14 +104,14 @@ myFUAs = Map.fromList
 --  , Application "firefox"
 --    mempty ["-P matrix", "-kiosk"] mempty
 --  )
-  , ( xK_z  -- [Z]ulip chat client
-    , Application "zulip"
-      mempty mempty mempty
-    )
-  , ( xK_s  -- [S]ignal messenger client
-    , Application "signal-desktop"
-      mempty ["--use-tray-icon"] mempty
-    )
+--, ( xK_z  -- [Z]ulip chat client
+--  , Application "zulip"
+--    mempty mempty mempty
+--  )
+--, ( xK_s  -- [S]ignal messenger client
+--  , Application "signal-desktop"
+--    mempty ["--use-tray-icon"] mempty
+--  )
 --, ( xK_p  -- [P]idgin XMPP client
 --  , Application "pidgin"
 --    mempty mempty mempty
