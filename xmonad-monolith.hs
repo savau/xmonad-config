@@ -36,7 +36,7 @@ import XMonad.Prompt
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
 import XMonad.Prompt.XMonad
 
-import qualified XMonad.StackSet as S
+import qualified XMonad.StackSet as StackSet
 
 import XMonad.Util.EZConfig (additionalKeys)
 import XMonad.Util.Run (runProcessWithInput, spawnPipe)
@@ -67,18 +67,18 @@ myKeys conf = Map.fromList $
   [ 
     ((myModMask, xK_Return), spawn "xterm -e tmux")
   , ((myModMask, xK_q     ), kill)
-  , ((myModMask, xK_Down  ), windows S.focusDown)
-  , ((myModMask, xK_Up    ), windows S.focusUp)
+  , ((myModMask, xK_Down  ), windows StackSet.focusDown)
+  , ((myModMask, xK_Up    ), windows StackSet.focusUp)
   , ((myModMask, xK_comma ), sendMessage $ IncMasterN (-1))
   , ((myModMask, xK_period), sendMessage $ IncMasterN   1 )
   , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
   , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto  allWindows)
   , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
 --, ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
-  , ((myModMask, xK_space ), withFocused $ windows . S.sink)
+  , ((myModMask, xK_space ), withFocused $ windows . StackSet.sink)
 
-  , ((myModMask .|. shiftMask, xK_Down ), windows S.swapDown)
-  , ((myModMask .|. shiftMask, xK_Up   ), windows S.swapUp)
+  , ((myModMask .|. shiftMask, xK_Down ), windows StackSet.swapDown)
+  , ((myModMask .|. shiftMask, xK_Up   ), windows StackSet.swapUp)
   , ((myModMask .|. shiftMask, xK_Left ), sendMessage FirstLayout)
   , ((myModMask .|. shiftMask, xK_Right), sendMessage NextLayout)       -- cycle through layouts
   , ((myModMask .|. shiftMask, xK_space), setLayout $ layoutHook conf)  -- reset layout
@@ -96,10 +96,10 @@ myKeys conf = Map.fromList $
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
-  [ ((myModMask, wsKeySym), windows $ (S.greedyView . show) wsId)
+  [ ((myModMask, wsKeySym), windows $ (StackSet.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
-  [ ((myModMask .|. shiftMask, wsKeySym), windows $ (S.shift . show) wsId)
+  [ ((myModMask .|. shiftMask, wsKeySym), windows $ (StackSet.shift . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ]
   where
