@@ -158,8 +158,6 @@ myPP = xmobarPP
   }
 
 
--- auxiliary defs
-
 myModMask, myFUAMask :: KeyMask
 myModMask = mod4Mask   -- Mod == Super
 myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
@@ -245,12 +243,12 @@ data Application = Application
                    }
                    deriving (Eq, Ord, Show, Read)
 
--- | Spawns a given application with the given environment and options, if given on a specific workspace
+-- | Spawns a given application with the given environment and options, and if given on a specific workspace
 spawnApplication :: Application -> X ()
 spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalate " " $ (fmap (\(k,v) -> k<>"="<>v<>" ") $ Map.toList appEnvironment) <> (appName : appOptions)
 
 
--- | Applications that will be automatically launched after starting XMonad
+-- | Applications that are automatically launched after starting XMonad
 myStartupApplications :: Set Application
 myStartupApplications = (Set.fromList . fmap (uncurryN Application))
   [
@@ -289,7 +287,9 @@ myStartupApplications = (Set.fromList . fmap (uncurryN Application))
 -- | Frequently used applications that can be launched via Mod+Shift+<key>
 myFUAs :: Map KeySym Application
 myFUAs = Map.fromList
-  [ ( xK_f  -- [F]ile manager
+  [
+    -- Basic applications
+    ( xK_f  -- [F]ile manager
     , Application "thunar"
       mempty mempty mempty
     )
@@ -298,7 +298,7 @@ myFUAs = Map.fromList
       mempty mempty mempty
     )
 
--- web applications
+  -- Web applications
   , ( xK_w  -- [W]eb browser
     , Application "firefox"
       mempty mempty mempty
@@ -312,43 +312,43 @@ myFUAs = Map.fromList
       (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
     )
 
--- development and system administration applications
---, ( xK_g  -- [G]rafana
---  , Application "firefox"
---    mempty ["-P grafana", "-kiosk"] mempty
---  )
+  -- Development and system administration applications
+  --, ( xK_g  -- [G]rafana
+  --  , Application "firefox"
+  --    mempty ["-P grafana", "-kiosk"] mempty
+  --  )
 
--- chat applications
---, ( xK_e  -- [E]lement (matrix)
---  , Application "firefox"
---    mempty ["-P matrix", "-kiosk"] mempty
---  )
---, ( xK_z  -- [Z]ulip chat client
---  , Application "zulip"
---    mempty mempty mempty
---  )
---, ( xK_s  -- [S]ignal messenger client
---  , Application "signal-desktop"
---    mempty ["--use-tray-icon"] mempty
---  )
---, ( xK_p  -- [P]idgin XMPP client
---  , Application "pidgin"
---    mempty mempty mempty
---  )
+  -- Chat applications
+  --, ( xK_e  -- [E]lement (matrix)
+  --  , Application "firefox"
+  --    mempty ["-P matrix", "-kiosk"] mempty
+  --  )
+  --, ( xK_z  -- [Z]ulip chat client
+  --  , Application "zulip"
+  --    mempty mempty mempty
+  --  )
+  --, ( xK_s  -- [S]ignal messenger client
+  --  , Application "signal-desktop"
+  --    mempty ["--use-tray-icon"] mempty
+  --  )
+  --, ( xK_p  -- [P]idgin XMPP client
+  --  , Application "pidgin"
+  --    mempty mempty mempty
+  --  )
 
--- IDEs
+  -- IDEs
   , ( xK_t  -- [T]eX IDE
     , Application "texstudio"
       mempty mempty mempty
     )
---, ( xK_i  -- IntelliJ [I]DEA
---  , Application "idea"
---    mempty mempty mempty
---  )
---, ( xK_o  -- GNU [O]ctave
---  , Application "octave"
---    mempty ["--gui"] mempty
---  )
+  --, ( xK_i  -- IntelliJ [I]DEA
+  --  , Application "idea"
+  --    mempty mempty mempty
+  --  )
+  --, ( xK_o  -- GNU [O]ctave
+  --  , Application "octave"
+  --    mempty ["--gui"] mempty
+  --  )
   ]
 
 
@@ -356,7 +356,7 @@ myFUAs = Map.fromList
 altMask :: KeyMask
 altMask = mod1Mask
 
--- | Convenience definition for the "no" key mask (i.e. no key pressed)
+-- | Convenience definition for the "no-key" mask (i.e. no key pressed)
 noMask :: KeyMask
 noMask = 0
 
