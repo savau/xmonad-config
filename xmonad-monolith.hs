@@ -57,7 +57,8 @@ main = do
     -- Hooks, layouts
     , layoutHook  = avoidStruts myLayouts
     , manageHook  = manageHook def <+> manageDocks <+> manageSpawn <+> myManageFloats
-    , startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
+    , startupHook = setWMName "LG3D"
+    -- , startupHook = mapM_ spawnApplication (Set.toList myStartupApplications) >> setWMName "LG3D"
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
@@ -178,7 +179,8 @@ myLayouts =
             frac    = 1/2
 
 myXMonadRestart :: String
-myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "xmonad --restart"
+myXMonadRestart = "xmonad --restart"
+-- myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "xmonad --restart"
 
 myLockScreenKeys :: Set KeySym
 myLockScreenKeys = Set.fromList
@@ -237,40 +239,40 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 
 -- TODO: Make myStartupApplications redundant by moving autostart to nix-config
 -- | Applications that are automatically launched after starting XMonad
-myStartupApplications :: Set Application
-myStartupApplications = (Set.fromList . fmap (uncurryN Application))
-  [
---  ( "xfce4-power-manager"
---  , mempty, mempty, mempty
---  )
---, ( "volumeicon"
---  , mempty, mempty, mempty
---  )
-    ( "nm-applet"
-    , mempty, mempty, mempty
-    )
-  , ( "blueman-applet"
-    , mempty, mempty, mempty
-    )
---, ( "pamac-tray"  -- TODO: launch this iff on Arch Linux
---  , mempty, mempty, mempty
---  )
---, ( "keepassxc"
---  , mempty, mempty, mempty
---  )
---, ( "megasync"
---  , Map.fromList [ ("QT_SCALE_FACTOR","1") ], mempty, mempty  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
---  )
---, ( "birdtray"
---  , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
---  )
---, ( "zulip"
---  , mempty, mempty, mempty
---  )
---, ( "signal-desktop-beta"
---  , mempty, mempty, Just "8"
---  )
-  ]
+-- myStartupApplications :: Set Application
+-- myStartupApplications = (Set.fromList . fmap (uncurryN Application))
+--   [
+-- --  ( "xfce4-power-manager"
+-- --  , mempty, mempty, mempty
+-- --  )
+-- --, ( "volumeicon"
+-- --  , mempty, mempty, mempty
+-- --  )
+--     ( "nm-applet"
+--     , mempty, mempty, mempty
+--     )
+--   , ( "blueman-applet"
+--     , mempty, mempty, mempty
+--     )
+-- --, ( "pamac-tray"  -- TODO: launch this iff on Arch Linux
+-- --  , mempty, mempty, mempty
+-- --  )
+-- --, ( "keepassxc"
+-- --  , mempty, mempty, mempty
+-- --  )
+-- --, ( "megasync"
+-- --  , Map.fromList [ ("QT_SCALE_FACTOR","1") ], mempty, mempty  -- setting QT_SCALE_FACTOR=1 as a workaround to avoid immediate segfault, see https://github.com/meganz/MEGAsync/issues/443
+-- --  )
+-- --, ( "birdtray"
+-- --  , Map.fromList [ ("LC_TIME","root.UTF-8") ], mempty, mempty
+-- --  )
+-- --, ( "zulip"
+-- --  , mempty, mempty, mempty
+-- --  )
+-- --, ( "signal-desktop-beta"
+-- --  , mempty, mempty, Just "8"
+-- --  )
+--   ]
 
 -- | Frequently used applications that can be launched via Mod+Shift+<key>
 myFUAs :: Map KeySym Application
