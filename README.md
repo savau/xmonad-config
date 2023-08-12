@@ -59,7 +59,8 @@ With the above-mentioned nix configuration, xmonad will be built with your confi
 ```
 3. `nixos-rebuild switch`
 
-On Arch (assuming a display manager such as LightDM is already installed and configured):
+### On Arch
+Assuming a display manager such as LightDM is already installed and configured:
 
 1. Install required packages:  
   ```sudo pacman -S xmonad xmonad-contrib xmonad-utils xmobar xscreensaver stalonetray```
