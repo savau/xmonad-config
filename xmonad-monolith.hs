@@ -45,8 +45,6 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 
 main = do
   nScreens <- countScreens
-  -- randrConfig <- fromMaybe "main" . listToMaybe . lines <$> runProcessWithInput "autorandr" ["--current"] mempty
-  -- spawn "taffybar"
   xmonad . docks . ewmh $ def
     { modMask            = myModMask
     , focusedBorderColor = myMainColorDark
@@ -88,8 +86,6 @@ myKeys conf = Map.fromList $
   , ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart)
   , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
---, ((myModMask .|. altMask, xK_Up   ), spawn "~/.utils/backlight/backlight.sh 1")
---, ((myModMask .|. altMask, xK_Down ), spawn "~/.utils/backlight/backlight.sh 0")
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
@@ -183,15 +179,6 @@ myLayouts =
 
 myXMonadRestart :: String
 myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "xmonad --restart"
--- myXMonadRestart = (concatMap (\Application{..} -> "pkill " <> appName <> "; ") $ Set.toList myStartupApplications) <> "pkill " <> mySystemTray <> "; pkill taffybar; xmonad --restart"
-
--- myXMobarConfig :: String -> Int -> String
--- myXMobarConfig randrConfig nScreens = statusBar <> "xmobar/" <> show randrConfig <> "/xmobar-" <> show nScreens <> ".hs"
-
--- mySystemTray :: String
--- mySystemTray = "stalonetray"
--- mySysTrayConf :: Int -> String
--- mySysTrayConf n = systemTray <> "stalonetray/stalonetrayrc-" <> show n
 
 myLockScreenKeys :: Set KeySym
 myLockScreenKeys = Set.fromList
@@ -248,6 +235,7 @@ spawnApplication :: Application -> X ()
 spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalate " " $ (fmap (\(k,v) -> k<>"="<>v<>" ") $ Map.toList appEnvironment) <> (appName : appOptions)
 
 
+-- TODO: Make myStartupApplications redundant by moving autostart to nix-config
 -- | Applications that are automatically launched after starting XMonad
 myStartupApplications :: Set Application
 myStartupApplications = (Set.fromList . fmap (uncurryN Application))
@@ -303,20 +291,14 @@ myFUAs = Map.fromList
     , Application "firefox"
       mempty mempty mempty
     )
-  , ( xK_c  -- [C]hromium
-    , Application "chromium"
-      mempty mempty mempty
-    )
+  -- , ( xK_c  -- [C]hromium
+  --   , Application "chromium"
+  --     mempty mempty mempty
+  --   )
   , ( xK_m  -- -[M]ail client
     , Application "thunderbird"
       (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
     )
-
-  -- Development and system administration applications
-  --, ( xK_g  -- [G]rafana
-  --  , Application "firefox"
-  --    mempty ["-P grafana", "-kiosk"] mempty
-  --  )
 
   -- Chat applications
   --, ( xK_e  -- [E]lement (matrix)
@@ -337,7 +319,7 @@ myFUAs = Map.fromList
   --  )
 
   -- IDEs
-  , ( xK_t  -- [T]eX IDE
+  , ( xK_t  -- [T]eX IDE  -- TODO: Make obsolete (move to neovim; ref: https://jdhao.github.io/2019/03/26/nvim_latex_write_preview/)
     , Application "texstudio"
       mempty mempty mempty
     )
@@ -349,6 +331,12 @@ myFUAs = Map.fromList
   --  , Application "octave"
   --    mempty ["--gui"] mempty
   --  )
+
+  -- Development and system administration applications
+  --, ( xK_g  -- [G]rafana
+  --  , Application "firefox"
+  --    mempty ["-P grafana", "-kiosk"] mempty
+  --  )
   ]
 
 
@@ -359,9 +347,3 @@ altMask = mod1Mask
 -- | Convenience definition for the "no-key" mask (i.e. no key pressed)
 noMask :: KeyMask
 noMask = 0
-
-
--- xMonad, statusBar, systemTray :: String
--- xMonad     = "~/.xmonad/"
--- statusBar  = xMonad <> "status-bar/"
--- systemTray = xMonad <> "system-tray/"
