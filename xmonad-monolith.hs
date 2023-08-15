@@ -293,20 +293,20 @@ myFUAs = Map.fromList
     , Application "firefox"
       mempty mempty mempty
     )
-  -- , ( xK_c  -- [C]hromium
-  --   , Application "chromium"
-  --     mempty mempty mempty
-  --   )
-  , ( xK_m  -- -[M]ail client
+  , ( xK_c  -- [C]hromium
+    , Application "chromium"
+      mempty mempty mempty
+    )
+  , ( xK_t  -- -[T]hunderbird
     , Application "thunderbird"
-      (Map.singleton "LC_TIME" "root.UTF-8") mempty mempty
+      (Map.singleton "LC_TIME" "en_DK.UTF-8") mempty mempty
     )
 
   -- Chat applications
-  --, ( xK_e  -- [E]lement (matrix)
-  --  , Application "firefox"
-  --    mempty ["-P matrix", "-kiosk"] mempty
-  --  )
+  , ( xK_e  -- [E]lement desktop client (Matrix)
+    , Application "element-desktop"
+      mempty mempty mempty
+    )
   --, ( xK_z  -- [Z]ulip chat client
   --  , Application "zulip"
   --    mempty mempty mempty
@@ -321,10 +321,10 @@ myFUAs = Map.fromList
   --  )
 
   -- IDEs
-  , ( xK_t  -- [T]eX IDE  -- TODO: Make obsolete (move to neovim; ref: https://jdhao.github.io/2019/03/26/nvim_latex_write_preview/)
-    , Application "texstudio"
-      mempty mempty mempty
-    )
+  --, ( xK_t  -- [T]eX IDE  -- TODO: Make obsolete (move to neovim; ref: https://jdhao.github.io/2019/03/26/nvim_latex_write_preview/)
+  --  , Application "texstudio"
+  --    mempty mempty mempty
+  --  )
   --, ( xK_i  -- IntelliJ [I]DEA
   --  , Application "idea"
   --    mempty mempty mempty
