@@ -64,7 +64,7 @@ main = do
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
   [ 
-    ((myModMask, xK_Return), spawn "xterm -e tmux")
+    ((myModMask, xK_Return), spawn "xfce4-terminal")
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows StackSet.focusDown)
   , ((myModMask, xK_Up    ), windows StackSet.focusUp)
