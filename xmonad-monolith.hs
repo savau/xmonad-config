@@ -46,7 +46,8 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 main = do
   nScreens <- countScreens
   xmonad . docks . ewmh $ def
-    { modMask            = myModMask
+    { terminal           = "xfce4-terminal"
+    , modMask            = myModMask
     , focusedBorderColor = myMainColorDark
     , normalBorderColor  = "#000000"
     , workspaces         = (show . wsId) <$> Set.toList myWorkspaces
@@ -64,7 +65,7 @@ main = do
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
 myKeys conf = Map.fromList $
   [ 
-    ((myModMask, xK_Return), spawn "xfce4-terminal")
+    ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
   , ((myModMask, xK_q     ), kill)
   , ((myModMask, xK_Down  ), windows StackSet.focusDown)
   , ((myModMask, xK_Up    ), windows StackSet.focusUp)
