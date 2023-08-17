@@ -132,7 +132,7 @@ myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf wh
 --  , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
 --  , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
     ]
-  myU2WUtilsDir = "~/.utils/u2w/"
+  myU2WUtilsDir = "/home/savau/.utils/u2w/"
 
 -- Wrapper type to map workspaces 
 data Workspace = Workspace
