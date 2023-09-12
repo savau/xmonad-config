@@ -110,9 +110,9 @@ myKeys conf = Map.fromList $
 
 myManageFloats :: ManageHook
 myManageFloats = composeAll
-  [ appName =? "thunar"    --> doFloat
-  , appName =? "keepassxc" --> doFloat
-  , appName =? "nextcloud" --> doFloat
+  [ XMonad.appName =? "thunar"    --> doFloat
+  , XMonad.appName =? "keepassxc" --> doFloat
+  , XMonad.appName =? "nextcloud" --> doFloat
   ]
 
 myScreenLayouts :: Map String (X ())
