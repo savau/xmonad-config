@@ -46,7 +46,7 @@ import XMonad.Util.SpawnOnce (spawnOnce)
 
 
 main = do
-  nScreens <- countScreens
+--nScreens <- countScreens
   xmonad . docks . ewmh $ def
     { terminal           = "xfce4-terminal"
     , modMask            = myModMask
@@ -90,7 +90,7 @@ myKeys conf = Map.fromList $
 --, ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart) -- TODO: recompilation not supported outside of nixos-rebuild atm
   , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
 
-  , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
+--, ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
   ((\key -> ((myModMask .|. controlMask, key), spawn "i3lock -n -c 000000")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
@@ -110,7 +110,9 @@ myKeys conf = Map.fromList $
 
 myManageFloats :: ManageHook
 myManageFloats = composeAll
-  [ className =? "MEGAsync" --> doFloat
+  [ appName =? "thunar"    --> doFloat
+  , appName =? "keepassxc" --> doFloat
+  , appName =? "nextcloud" --> doFloat
   ]
 
 myScreenLayouts :: Map String (X ())
