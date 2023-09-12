@@ -32,6 +32,7 @@ import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
 import XMonad.Layout.MultiColumns (multiCol)
+import XMonad.Layout.Grid (Grid(..))
 
 import XMonad.Prompt
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
