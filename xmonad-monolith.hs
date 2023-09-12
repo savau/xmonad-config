@@ -124,7 +124,7 @@ myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf wh
   myUWXPromptConf = myXPromptConf
     { defaultPrompter = const "UniWorX >>= "
     , autoComplete    = Just 0
-    , font = "-*-liberation sans mono-medium-r-normal--10-120-*-*-m-*-*-*"
+    , font = "-*-liberation sans mono-medium-r-normal--0-0-0-0-m-0-*-*"
     }
   myUWXPromptOpts :: Map String (X ())
   myUWXPromptOpts = Map.fromList
@@ -220,7 +220,7 @@ myXMonadSysPrompt = myXMonadSysPromptXfce where
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
-  { font         = "-*-liberation sans-medium-r-normal--10-120-*-*-p-*-*-*"
+  { font         = "-*-liberation sans-medium-r-normal--0-0-0-0-p-0-0-*"
   , height       = 25
   , historySize  = 0
   , position     = Top
