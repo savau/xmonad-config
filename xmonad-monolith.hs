@@ -90,7 +90,7 @@ myKeys conf = Map.fromList $
 
   , ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
-  ((\key -> ((myModMask .|. controlMask, key), spawn "xscreensaver-command -lock")) <$> myLockScreenKeys') ++
+  ((\key -> ((myModMask .|. controlMask, key), spawn "lock")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
