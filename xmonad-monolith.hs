@@ -31,6 +31,7 @@ import XMonad.Layout.IndependentScreens (countScreens)
 import XMonad.Layout.ResizableTile (MirrorResize(..), ResizableTall(..))
 import XMonad.Layout.Spiral (spiral)
 import XMonad.Layout.ThreeColumns (ThreeCol(..))
+import XMonad.Layout.MultiColumns (multiCol)
 
 import XMonad.Prompt
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
@@ -167,11 +168,13 @@ myFocusColor     = "#ffffff"
 myUrgentColor    = "#5294e2"
 
 myLayouts = 
-              Tall nMaster delta frac
-          ||| Mirror (Tall nMaster delta frac)
-          ||| ThreeCol nMaster delta frac
+              ThreeCol nMaster delta frac
           ||| Mirror (ThreeCol nMaster delta frac)
+          ||| Tall nMaster delta frac
+          ||| Mirror (Tall nMaster delta frac)
        -- ||| ResizableTall nMaster delta frac [1]
+          ||| multiCol [1] nMaster delta frac
+          ||| Grid
           ||| spiral (6/7)
           ||| Full
           where
