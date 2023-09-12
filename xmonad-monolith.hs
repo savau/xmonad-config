@@ -122,7 +122,7 @@ myU2WPrompt :: XConfig Layout -> X ()
 myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
   myU2WPromptConf :: XPConfig
   myU2WPromptConf = myXPromptConf
-    { defaultPrompter = const "UniWorX > "
+    { defaultPrompter = const "UniWorX >>= "
     , autoComplete    = Just 0
     }
   myU2WPromptOpts :: Map String (X ())
@@ -153,9 +153,9 @@ myWorkspaces = Set.fromList $ (\(wsId,wsKeySym) -> Workspace{..}) <$> (zip (10:[
 
 myPP :: PP
 myPP = xmobarPP
-  { ppCurrent = xmobarColor myFocusColor     mempty . wrap "[" "]"
-  , ppHidden  = xmobarColor myMainColorLight mempty
-  , ppUrgent  = xmobarColor myUrgentColor    mempty . wrap "!" "!"
+  { ppCurrent = xmobarColor myFocusColor    mempty . wrap "[" "]"
+  , ppHidden  = xmobarColor myMainColorDark mempty
+  , ppUrgent  = xmobarColor myUrgentColor   mempty . wrap "!" "!"
   , ppSep     = " | "
   }
 
@@ -165,10 +165,10 @@ myModMask = mod4Mask   -- Mod == Super
 myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
 
 myMainColorLight, myMainColorDark, myFocusColor, myUrgentColor :: String
-myMainColorLight = "#7c818c"
-myMainColorDark  = "#383c4a"
-myFocusColor     = "#ffffff"
-myUrgentColor    = "#5294e2"
+myMainColorLight = "#fafafa"
+myMainColorDark  = "#242424"
+myFocusColor     = "#78aeed"
+myUrgentColor    = "#ed333b"
 
 myLayouts = 
               ThreeCol nMaster delta frac
@@ -219,7 +219,7 @@ myXMonadSysPrompt = myXMonadSysPromptXfce where
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
-  { font         = "xft:Droid Sans Mono-10:antialias=true"
+  { font         = "xft:Liberation Sans Mono-10:antialias=true"
   , height       = 25
   , historySize  = 0
   , position     = Top
@@ -227,7 +227,7 @@ myXPromptConf    = def
   , bgColor      = myMainColorDark
   , alwaysHighlight = True
   , bgHLight = myMainColorDark
-  , fgHLight = myUrgentColor
+  , fgHLight = myFocusColor
   }
 
 
