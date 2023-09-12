@@ -95,7 +95,7 @@ myKeys conf = Map.fromList $
   ((\key -> ((myModMask .|. controlMask, key), spawn "i3lock -n -c 000000")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
-  [ ((myModMask, xK_u), myU2WPrompt conf) ] ++
+  [ ((myModMask, xK_u), myUWXPrompt conf) ] ++
   [ ((myModMask, wsKeySym), windows $ (StackSet.greedyView . show) wsId)
     | Workspace{..} <- myWorkspaces'
   ] ++
@@ -118,25 +118,26 @@ myManageFloats = composeAll
 myScreenLayouts :: Map String (X ())
 myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
 
-myU2WPrompt :: XConfig Layout -> X ()
-myU2WPrompt conf = xmonadPromptC (Map.toList myU2WPromptOpts) myU2WPromptConf where
-  myU2WPromptConf :: XPConfig
-  myU2WPromptConf = myXPromptConf
+myUWXPrompt :: XConfig Layout -> X ()
+myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
+  myUWXPromptConf :: XPConfig
+  myUWXPromptConf = myXPromptConf
     { defaultPrompter = const "UniWorX >>= "
     , autoComplete    = Just 0
+    , font = "-*-liberation sans mono-medium-r-normal--10-120-*-*-m-*-*-*"
     }
-  myU2WPromptOpts :: Map String (X ())
-  myU2WPromptOpts = Map.fromList
-    [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop u2w\"" )
-    , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --develop fradrive\"" )
---  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
---  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
---  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "monitor/all_servers.sh\"" )
---  , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myU2WUtilsDir <> "launch-terminal/local.sh\"" )
---  , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/start.sh" )
---  , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myU2WUtilsDir <> "sshfs/stop.sh" )
+  myUWXPromptOpts :: Map String (X ())
+  myUWXPromptOpts = Map.fromList
+    [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop u2w\"" )
+    , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive\"" )
+--  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
+--  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
+--  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "monitor/all_servers.sh\"" )
+--  , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/local.sh\"" )
+--  , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/start.sh" )
+--  , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/stop.sh" )
     ]
-  myU2WUtilsDir = "/home/savau/.utils/u2w/"
+  myUWXUtilsDir = "~/.utils/uniworx"
 
 -- Wrapper type to map workspaces 
 data Workspace = Workspace
@@ -219,7 +220,7 @@ myXMonadSysPrompt = myXMonadSysPromptXfce where
 
 myXPromptConf :: XPConfig
 myXPromptConf    = def
-  { font         = "xft:Liberation Sans Mono-10:antialias=true"
+  { font         = "-*-liberation sans-medium-r-normal--10-120-*-*-p-*-*-*"
   , height       = 25
   , historySize  = 0
   , position     = Top
