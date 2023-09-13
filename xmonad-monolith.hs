@@ -303,7 +303,7 @@ myFUAs = Map.fromList
     )
   , ( xK_c  -- [C]hromium
     , Application "chromium"
-      mempty mempty mempty
+      mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
     )
   , ( xK_t  -- -[T]hunderbird
     , Application "thunderbird"
@@ -313,7 +313,7 @@ myFUAs = Map.fromList
   -- Chat applications
   , ( xK_e  -- [E]lement desktop client (Matrix)
     , Application "element-desktop"
-      mempty mempty mempty
+      mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
     )
   --, ( xK_z  -- [Z]ulip chat client
   --  , Application "zulip"
