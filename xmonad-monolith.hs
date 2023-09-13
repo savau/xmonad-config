@@ -113,6 +113,7 @@ myManageFloats = composeAll
   [ XMonad.appName =? "thunar"    --> doFloat
   , XMonad.appName =? "keepassxc" --> doFloat
   , XMonad.appName =? "nextcloud" --> doFloat
+  , XMonad.appName =? "element-desktop" --> doFloat
   ]
 
 myScreenLayouts :: Map String (X ())
