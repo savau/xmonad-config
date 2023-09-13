@@ -128,8 +128,8 @@ myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf wh
     }
   myUWXPromptOpts :: Map String (X ())
   myUWXPromptOpts = Map.fromList
-    [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " --execute source " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop u2w" )
-    , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " --execute source " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive" )
+    [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop u2w" )
+    , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive" )
 --  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
 --  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
 --  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "monitor/all_servers.sh\"" )
