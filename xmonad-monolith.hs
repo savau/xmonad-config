@@ -173,13 +173,13 @@ myFocusColor     = "#78aeed"
 myUrgentColor    = "#ed333b"
 
 myLayouts = 
-              ThreeCol nMaster delta frac
-          ||| Mirror (ThreeCol nMaster delta frac)
+              Grid
           ||| Tall nMaster delta frac
           ||| Mirror (Tall nMaster delta frac)
+          ||| ThreeCol nMaster delta frac
+          ||| Mirror (ThreeCol nMaster delta frac)
        -- ||| ResizableTall nMaster delta frac [1]
           ||| multiCol [1] nMaster delta frac
-          ||| Grid
           ||| spiral (6/7)
           ||| Full
           where
