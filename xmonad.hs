@@ -149,7 +149,7 @@ myKeys conf = Map.fromList $ concat
       ]
 
     myUWXPrompt :: XConfig Layout -> X ()
-    myUWXPrompt conf = inputPrompt myXPromptConf "develop @ srv01" ?+ (spawn . (XMonad.terminal conf <> " --execute ~/.utils/uniworx/launch-terminal/dev.sh --develop " <>))
+    myUWXPrompt conf = inputPrompt myXPromptConf "develop @ srv01" ?+ (spawn . (XMonad.terminal conf <>) . (" --execute ~/.utils/uniworx/launch-terminal/dev.sh --develop " <>))
     -- myUWXPrompt :: XConfig Layout -> X ()
     -- myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
     --   myUWXPromptConf :: XPConfig
