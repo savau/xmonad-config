@@ -92,7 +92,7 @@ myKeys conf = Map.fromList $
 
 --, ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
   ] ++
-  ((\key -> ((myModMask .|. controlMask, key), spawn "i3lock -n -c 000000")) <$> myLockScreenKeys') ++
+  ((\key -> ((myModMask, key), spawn "i3lock -n -c 000000")) <$> myLockScreenKeys') ++
   ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
   ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
   [ ((myModMask, xK_u), myUWXPrompt conf) ] ++
