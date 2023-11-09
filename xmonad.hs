@@ -88,7 +88,7 @@ myKeys conf = Map.fromList $ concat
       ] ++
       [ (wsKeySym  , windows $ (StackSet.greedyView . show) wsId) | Workspace{..} <- Set.toList myWorkspaces ]
               ++ ((, spawn "i3lock -n -c 000000") <$> Set.toList myLockScreenKeys)
-              ++ ((, myXMonadSysPrompt) <$> Set.toList mySystemKeys)
+              ++ ((, spawn "xfce4-session-logout") <$> Set.toList mySystemKeys)
     myLockScreenKeys :: Set KeySym
     myLockScreenKeys = Set.fromList
       [ xK_minus   -- us layout
