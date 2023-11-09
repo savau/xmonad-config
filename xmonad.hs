@@ -101,7 +101,7 @@ myKeys conf = Map.fromList $ concat
       ]
 
     mySystemCommands :: Map KeySym (X ())
-    mySystemCommands =
+    mySystemCommands = Map.fromList $
       [
         (xK_Up    , windows StackSet.swapUp)
       , (xK_Down  , windows StackSet.swapDown)
