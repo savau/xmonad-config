@@ -35,6 +35,7 @@ import XMonad.Layout.MultiColumns (multiCol)
 import XMonad.Layout.Grid (Grid(..))
 
 import XMonad.Prompt
+import XMonad.Prompt.Input
 import XMonad.Prompt.Window (WindowPrompt(..), windowPrompt, allWindows)
 import XMonad.Prompt.XMonad
 
@@ -148,25 +149,27 @@ myKeys conf = Map.fromList $ concat
       ]
 
     myUWXPrompt :: XConfig Layout -> X ()
-    myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
-      myUWXPromptConf :: XPConfig
-      myUWXPromptConf = myXPromptConf
-        { defaultPrompter = const "UniWorX >>= "
-        , autoComplete    = Just 0
-        , font = "-*-liberation sans mono-medium-r-normal--0-0-0-0-m-0-*-*"
-        }
-      myUWXPromptOpts :: Map String (X ())
-      myUWXPromptOpts = Map.fromList
-        [ ( "u[2w]: develop@srv01.uniworx.de:~/u2w" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop u2w" )
-        , ( "f[radrive]: develop@srv01.uniworx.de:~/fradrive" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive" )
-    --  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
-    --  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
-    --  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "monitor/all_servers.sh\"" )
-    --  , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/local.sh\"" )
-    --  , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/start.sh" )
-    --  , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/stop.sh" )
-        ]
-      myUWXUtilsDir = "~/.utils/uniworx"
+    myUWXPrompt conf = inputPrompt myXPromptConf "develop @ srv01" ?+ (spawn . (XMonad.terminal conf <> " --execute ~/.utils/uniworx/launch-terminal/dev.sh --develop " <>))
+    -- myUWXPrompt :: XConfig Layout -> X ()
+    -- myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
+    --   myUWXPromptConf :: XPConfig
+    --   myUWXPromptConf = myXPromptConf
+    --     { defaultPrompter = const "UniWorX >>= "
+    --  -- , autoComplete    = Just 0
+    --     , font = "-*-liberation sans mono-medium-r-normal--0-0-0-0-m-0-*-*"
+    --     }
+    --   myUWXPromptOpts :: Map String (X ())
+    --   myUWXPromptOpts = Map.fromList
+    --     [ ( "f1: develop@srv01.uniworx.de:~/fradrive-1" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive-1" )
+    --     , ( "f2: develop@srv01.uniworx.de:~/fradrive-2" , spawn $ XMonad.terminal conf <> " --execute " <> myUWXUtilsDir <> "/launch-terminal/dev.sh --develop fradrive-2" )
+    -- --  , ( "z[sh]: zsh@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --project u2w\"" )
+    -- --  , ( "n[ix-shell]: nix-shell@srv01.uniworx.de" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/dev.sh --nix-shell u2w\"" )
+    -- --  , ( "m[onitor]: monitor servers", spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "monitor/all_servers.sh\"" )
+    -- --  , ( "l[ocal]: shell@localhost:~/u2w" , spawn $ XMonad.terminal conf <> " -e \"source " <> myUWXUtilsDir <> "launch-terminal/local.sh\"" )
+    -- --  , ( "s[shfs-]m[ount]: mount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/start.sh" )
+    -- --  , ( "s[shfs-]u[nmount]: unmount SSHFS" , spawn $ myUWXUtilsDir <> "sshfs/stop.sh" )
+    --     ]
+    --   myUWXUtilsDir = "~/.utils/uniworx"
 
     -- myXMonadSysPrompt :: X ()
     -- myXMonadSysPrompt = myXMonadSysPromptXfce where
