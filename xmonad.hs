@@ -244,6 +244,19 @@ myMainColorDark  = "#242424"
 myFocusColor     = "#78aeed"
 myUrgentColor    = "#ed333b"
 
+myXPromptConf :: XPConfig
+myXPromptConf    = def
+  { font         = "-*-liberation sans-medium-r-normal--0-0-0-0-p-0-0-*"
+  , height       = 25
+  , historySize  = 0
+  , position     = Top
+  , borderColor  = myMainColorDark
+  , bgColor      = myMainColorDark
+  , alwaysHighlight = True
+  , bgHLight = myMainColorDark
+  , fgHLight = myFocusColor
+  }
+
 
 -- | Mod == Super
 myModMask :: KeyMask
