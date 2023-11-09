@@ -288,7 +288,7 @@ myFUAs :: Map KeySym Application
 myFUAs = Map.fromList
   [
     -- Basic applications
-    ( xK_f  -- [F]ile manager
+    ( xK_t  -- [T]hunar
     , Application "thunar"
       mempty mempty mempty
     )
@@ -298,7 +298,7 @@ myFUAs = Map.fromList
     )
 
   -- Web applications
-  , ( xK_w  -- [W]eb browser
+  , ( xK_f  -- [F]irefox
     , Application "firefox"
       mempty mempty mempty
     )
@@ -306,7 +306,7 @@ myFUAs = Map.fromList
     , Application "chromium"
       mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
     )
-  , ( xK_t  -- -[T]hunderbird
+  , ( xK_m  -- -[M]ozilla Thunderbird
     , Application "thunderbird"
       (Map.singleton "LC_TIME" "en_DK.UTF-8") mempty mempty
     )
@@ -316,38 +316,6 @@ myFUAs = Map.fromList
     , Application "element-desktop"
       mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
     )
-  --, ( xK_z  -- [Z]ulip chat client
-  --  , Application "zulip"
-  --    mempty mempty mempty
-  --  )
-  --, ( xK_s  -- [S]ignal messenger client
-  --  , Application "signal-desktop"
-  --    mempty ["--use-tray-icon"] mempty
-  --  )
-  --, ( xK_p  -- [P]idgin XMPP client
-  --  , Application "pidgin"
-  --    mempty mempty mempty
-  --  )
-
-  -- IDEs
-  --, ( xK_t  -- [T]eX IDE  -- TODO: Make obsolete (move to neovim; ref: https://jdhao.github.io/2019/03/26/nvim_latex_write_preview/)
-  --  , Application "texstudio"
-  --    mempty mempty mempty
-  --  )
-  --, ( xK_i  -- IntelliJ [I]DEA
-  --  , Application "idea"
-  --    mempty mempty mempty
-  --  )
-  --, ( xK_o  -- GNU [O]ctave
-  --  , Application "octave"
-  --    mempty ["--gui"] mempty
-  --  )
-
-  -- Development and system administration applications
-  --, ( xK_g  -- [G]rafana
-  --  , Application "firefox"
-  --    mempty ["-P grafana", "-kiosk"] mempty
-  --  )
   ]
 
 
