@@ -5,7 +5,7 @@ My personal XMonad configuration
 
 ### On NixOS with home-manager
 
-A monolithic version of `xmonad.hs` can be deployed using [home-manager](https://github.com/nix-community/home-manager).
+The `xmonad.hs` can be deployed using [home-manager](https://github.com/nix-community/home-manager).
 
 To install, put the following into your `home.nix`:
 ```nix
@@ -22,7 +22,7 @@ To install, put the following into your `home.nix`:
         status-notifier-item
         tuple
       ];
-      config = ./path/to/your/xmonad-monolith.hs;
+      config = ./path/to/your/xmonad.hs;
     };
   };
 }
