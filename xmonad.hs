@@ -173,7 +173,7 @@ myFocusColor     = "#78aeed"
 myUrgentColor    = "#ed333b"
 
 myLayouts = 
-              Grid
+              Mirror Grid
           ||| Tall nMaster delta frac
           ||| Mirror (Tall nMaster delta frac)
           ||| ThreeCol nMaster delta frac
