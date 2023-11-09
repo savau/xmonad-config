@@ -65,48 +65,78 @@ main = do
     }
 
 myKeys :: XConfig Layout -> Map (ButtonMask, KeySym) (X ())
-myKeys conf = Map.fromList $
-  [ 
-    ((myModMask, xK_Return), spawn $ XMonad.terminal conf)
-  , ((myModMask, xK_q     ), kill)
-  , ((myModMask, xK_Down  ), windows StackSet.focusDown)
-  , ((myModMask, xK_Up    ), windows StackSet.focusUp)
-  , ((myModMask, xK_comma ), sendMessage $ IncMasterN (-1))
-  , ((myModMask, xK_period), sendMessage $ IncMasterN   1 )
-  , ((myModMask, xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
-  , ((myModMask, xK_g     ), windowPrompt myXPromptConf Goto  allWindows)
-  , ((myModMask, xK_b     ), windowPrompt myXPromptConf Bring allWindows)
---, ((myModMask, xK_x     ), xmonadPrompt myXPromptConf)
-  , ((myModMask, xK_space ), withFocused $ windows . StackSet.sink)
-
-  , ((myModMask .|. shiftMask, xK_Down ), windows StackSet.swapDown)
-  , ((myModMask .|. shiftMask, xK_Up   ), windows StackSet.swapUp)
-  , ((myModMask .|. shiftMask, xK_Left ), sendMessage FirstLayout)
-  , ((myModMask .|. shiftMask, xK_Right), sendMessage NextLayout)       -- cycle through layouts
-  , ((myModMask .|. shiftMask, xK_space), setLayout $ layoutHook conf)  -- reset layout
-
-  , ((myModMask .|. controlMask, xK_Left  ), sendMessage Shrink)
-  , ((myModMask .|. controlMask, xK_Right ), sendMessage Expand)
---, ((myModMask .|. controlMask, xK_r     ), spawn $ "xmonad --recompile && " <> myXMonadRestart) -- TODO: recompilation not supported outside of nixos-rebuild atm
-  , ((myModMask .|. controlMask, xK_k     ), spawn "xmodmap ~/.Xmodmap")
-
---, ((myModMask .|. altMask, xK_space), xmonadPromptC myScreenLayouts' myXPromptConf{ defaultPrompter = const "Screen layout: " })
-  ] ++
-  ((\key -> ((myModMask, key), spawn "i3lock -n -c 000000")) <$> myLockScreenKeys') ++
-  ((\key -> ((myModMask, key), myXMonadSysPrompt)) <$> Set.toList mySystemKeys) ++
-  ((\(key,app) -> ((myModMask .|. myFUAMask, key), spawnApplication app)) <$> myFUAs') ++
-  [ ((myModMask, xK_u), myUWXPrompt conf) ] ++
-  [ ((myModMask, wsKeySym), windows $ (StackSet.greedyView . show) wsId)
-    | Workspace{..} <- myWorkspaces'
-  ] ++
-  [ ((myModMask .|. shiftMask, wsKeySym), windows $ (StackSet.shift . show) wsId)
-    | Workspace{..} <- myWorkspaces'
+myKeys conf = Map.fromList $ concat
+  [ [ ((myModMask                , key), comm) | (key, comm) <- Map.toList myMainCommands   ]
+  , [ ((myModMask .|. controlMask, key), comm) | (key, comm) <- Map.toList mySystemCommands ]
+  , [ ((myModMask .|. shiftMask  , key), spawnApplication app) | (key, app) <- Map.toList myFUAs ]
   ]
   where
-    myFUAs'           = Map.toList myFUAs
-    myLockScreenKeys' = Set.toList myLockScreenKeys
-    myScreenLayouts'  = Map.toList myScreenLayouts
-    myWorkspaces'     = Set.toList myWorkspaces
+    myMainCommands :: Map KeySym (X ())
+    myMainCommands = Map.fromList $
+      [ (xK_Return , spawn $ XMonad.terminal conf)
+      , (xK_q      , kill)
+      , (xK_k      , windows StackSet.focusUp)
+      , (xK_j      , windows StackSet.focusDown)
+      , (xK_comma  , sendMessage $ IncMasterN (-1))
+      , (xK_period , sendMessage $ IncMasterN   1 )
+      , (xK_d      , spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
+      , (xK_g      , windowPrompt myXPromptConf Goto  allWindows)
+      , (xK_b      , windowPrompt myXPromptConf Bring allWindows)
+    --, (xK_x      , xmonadPrompt myXPromptConf)
+      , (xK_space  , withFocused $ windows . StackSet.sink)
+      , (xK_u      , myUWXPrompt conf) -- TODO move to FUA
+      ] ++
+      [ (wsKeySym  , windows $ (StackSet.greedyView . show) wsId) | Workspace{..} <- Set.toList myWorkspaces ]
+              ++ ((, spawn "i3lock -n -c 000000") <$> Set.toList myLockScreenKeys)
+              ++ ((, myXMonadSysPrompt) <$> Set.toList mySystemKeys)
+
+    mySystemCommands :: Map KeySym (X ())
+    mySystemCommands =
+      [
+        (xK_Up    , windows StackSet.swapUp)
+      , (xK_Down  , windows StackSet.swapDown)
+      , (xK_Left  , sendMessage FirstLayout)
+      , (xK_Right , sendMessage NextLayout)       -- cycle through layouts
+      , (xK_space , setLayout $ layoutHook conf)  -- reset layout
+      , (xK_Left  , sendMessage Shrink)
+      , (xK_Right , sendMessage Expand)
+    --, (xK_r     , spawn $ "xmonad --recompile && " <> myXMonadRestart) -- TODO: recompilation not supported outside of nixos-rebuild atm
+      , (xK_k     , spawn "xmodmap ~/.Xmodmap") -- TODO: make obsolete by defining udev rule
+      ] ++
+      [ (wsKeySym , windows $ (StackSet.shift . show) wsId) | Workspace{..} <- Set.toList myWorkspaces ]
+
+    -- | Frequently used applications that can be launched via Mod+Shift+<key>
+    myFUAs :: Map KeySym Application
+    myFUAs = Map.fromList
+      [
+        -- Basic applications
+        ( xK_t  -- [T]hunar
+        , Application "thunar"
+          mempty mempty mempty
+        )
+      , ( xK_k  -- [K]eepassxc password manager
+        , Application "keepassxc"
+          mempty mempty mempty
+        )
+      -- Web applications
+      , ( xK_f  -- [F]irefox
+        , Application "firefox"
+          mempty mempty mempty
+        )
+      , ( xK_c  -- [C]hromium
+        , Application "chromium"
+          mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
+        )
+      , ( xK_m  -- -[M]ozilla Thunderbird
+        , Application "thunderbird"
+          (Map.singleton "LC_TIME" "en_DK.UTF-8") mempty mempty
+        )
+      -- Chat applications
+      , ( xK_e  -- [E]lement desktop client (Matrix)
+        , Application "element-desktop"
+          mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
+        )
+      ]
 
 myManageFloats :: ManageHook
 myManageFloats = composeAll
@@ -115,9 +145,6 @@ myManageFloats = composeAll
   , XMonad.appName =? "nextcloud" --> doFloat
   , XMonad.appName =? "element-desktop" --> doFloat
   ]
-
-myScreenLayouts :: Map String (X ())
-myScreenLayouts = Map.fromList $ (\sl -> (sl, spawn $ "~/.screenlayout/" <> sl <> ".sh; " <> myXMonadRestart)) <$> ["main", "home", "work"]
 
 myUWXPrompt :: XConfig Layout -> X ()
 myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
@@ -162,9 +189,8 @@ myPP = xmobarPP
   }
 
 
-myModMask, myFUAMask :: KeyMask
-myModMask = mod4Mask   -- Mod == Super
-myFUAMask = shiftMask  -- Mod+Shift+(a-z) for frequently used applications
+myModMask :: KeyMask
+myModMask = mod4Mask  -- Mod == Super
 
 myMainColorLight, myMainColorDark, myFocusColor, myUrgentColor :: String
 myMainColorLight = "#fafafa"
@@ -283,40 +309,6 @@ spawnApplication Application{..} = maybe spawn spawnOn appWorkspace $ intercalat
 -- --  )
 --   ]
 
--- | Frequently used applications that can be launched via Mod+Shift+<key>
-myFUAs :: Map KeySym Application
-myFUAs = Map.fromList
-  [
-    -- Basic applications
-    ( xK_t  -- [T]hunar
-    , Application "thunar"
-      mempty mempty mempty
-    )
-  , ( xK_k  -- [K]eepassxc password manager
-    , Application "keepassxc"
-      mempty mempty mempty
-    )
-
-  -- Web applications
-  , ( xK_f  -- [F]irefox
-    , Application "firefox"
-      mempty mempty mempty
-    )
-  , ( xK_c  -- [C]hromium
-    , Application "chromium"
-      mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
-    )
-  , ( xK_m  -- -[M]ozilla Thunderbird
-    , Application "thunderbird"
-      (Map.singleton "LC_TIME" "en_DK.UTF-8") mempty mempty
-    )
-
-  -- Chat applications
-  , ( xK_e  -- [E]lement desktop client (Matrix)
-    , Application "element-desktop"
-      mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
-    )
-  ]
 
 
 -- | Convenience definition for Mod1 (== Alt) key mask
