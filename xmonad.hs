@@ -69,14 +69,22 @@ myKeys conf = Map.fromList $ concat
   [ [ ((myModMask                , key), comm) | (key, comm) <- Map.toList myMainCommands   ]
   , [ ((myModMask .|. controlMask, key), comm) | (key, comm) <- Map.toList mySystemCommands ]
   , [ ((myModMask .|. shiftMask  , key), spawnApplication app) | (key, app) <- Map.toList myFUAs ]
+  , concat -- Workspace control
+    [ [ ((myModMask              , wsKeySym), windows $ (StackSet.greedyView . show) wsId)
+      , ((myModMask .|. shiftMask, wsKeySym), windows $ (StackSet.shift      . show) wsId)
+      ]
+    | Workspace{..} <- Set.toList myWorkspaces
+    ]
   ]
   where
     myMainCommands :: Map KeySym (X ())
     myMainCommands = Map.fromList $
       [ (xK_Return , spawn $ XMonad.terminal conf)
       , (xK_q      , kill)
-      , (xK_k      , windows StackSet.focusUp)
+      , (xK_h      , windows StackSet.swapDown)
       , (xK_j      , windows StackSet.focusDown)
+      , (xK_k      , windows StackSet.focusUp)
+        (xK_l      , windows StackSet.swapUp)
       , (xK_comma  , sendMessage $ IncMasterN (-1))
       , (xK_period , sendMessage $ IncMasterN   1 )
       , (xK_d      , spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -85,9 +93,7 @@ myKeys conf = Map.fromList $ concat
     --, (xK_x      , xmonadPrompt myXPromptConf)
       , (xK_space  , withFocused $ windows . StackSet.sink)
       , (xK_u      , myUWXPrompt conf) -- TODO move to FUA
-      ] ++
-      [ (wsKeySym  , windows $ (StackSet.greedyView . show) wsId) | Workspace{..} <- Set.toList myWorkspaces ]
-              ++ ((, spawn "i3lock -n -c 000000") <$> Set.toList myLockScreenKeys)
+      ]       ++ ((, spawn "i3lock -n -c 000000" ) <$> Set.toList myLockScreenKeys)
               ++ ((, spawn "xfce4-session-logout") <$> Set.toList mySystemKeys)
     myLockScreenKeys :: Set KeySym
     myLockScreenKeys = Set.fromList
@@ -102,18 +108,14 @@ myKeys conf = Map.fromList $ concat
 
     mySystemCommands :: Map KeySym (X ())
     mySystemCommands = Map.fromList $
-      [
-        (xK_Up    , windows StackSet.swapUp)
-      , (xK_Down  , windows StackSet.swapDown)
-      , (xK_Left  , sendMessage FirstLayout)
-      , (xK_Right , sendMessage NextLayout)       -- cycle through layouts
+      [ (xK_h     , sendMessage FirstLayout)
+      , (xK_j     , sendMessage Expand)
+      , (xK_k     , sendMessage Shrink)
+      , (xK_l     , sendMessage NextLayout)       -- cycle through layouts
       , (xK_space , setLayout $ layoutHook conf)  -- reset layout
-      , (xK_Left  , sendMessage Shrink)
-      , (xK_Right , sendMessage Expand)
     --, (xK_r     , spawn $ "xmonad --recompile && " <> myXMonadRestart) -- TODO: recompilation not supported outside of nixos-rebuild atm
-      , (xK_k     , spawn "xmodmap ~/.Xmodmap") -- TODO: make obsolete by defining udev rule
-      ] ++
-      [ (wsKeySym , windows $ (StackSet.shift . show) wsId) | Workspace{..} <- Set.toList myWorkspaces ]
+    --, (xK_k     , spawn "xmodmap ~/.Xmodmap") -- TODO: make obsolete by defining udev rule
+      ]
 
     -- | Frequently used applications that can be launched via Mod+Shift+<key>
     myFUAs :: Map KeySym Application
