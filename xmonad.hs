@@ -92,7 +92,7 @@ myKeys conf = Map.fromList $ concat
       , (xK_b      , windowPrompt myXPromptConf Bring allWindows)
     --, (xK_x      , xmonadPrompt myXPromptConf)
       , (xK_space  , withFocused $ windows . StackSet.sink)
-      , (xK_u      , myUWXPrompt conf) -- TODO move to FUA
+    --, (xK_u      , myUWXPrompt conf) -- TODO move to FUA
       ]       ++ ((, spawn "i3lock -n -c 000000" ) <$> Set.toList myLockScreenKeys)
               ++ ((, spawn "xfce4-session-logout") <$> Set.toList mySystemKeys)
     myLockScreenKeys :: Set KeySym
@@ -150,8 +150,15 @@ myKeys conf = Map.fromList $ concat
         )
       ]
 
-    myUWXPrompt :: XConfig Layout -> X ()
-    myUWXPrompt conf = inputPrompt myXPromptConf "develop @ srv01" ?+ (spawn . (XMonad.terminal conf <>) . (" --execute ~/.utils/uniworx/launch-terminal/dev.sh --develop " <>))
+    -- myUWXPrompt conf = inputPrompt myXPromptConf
+    --   { promptKeyMap = Map.union defaultXPKeymap $ Map.fromList
+    --     [ ((myModMask, xK_1), ) -- srv01
+    --     , ((myModMask, xK_2), ) -- srv02
+    --     , ((myModMask, xK_d), ) -- develop
+    --     , ((myModMask, xK_r), ) -- root
+    --     ]
+    --   }
+    --   "UniWorX" ?+ (spawn . (XMonad.terminal conf <>) . (" --execute ~/.utils/uniworx/launch-terminal/dev.sh --develop " <>))
     -- myUWXPrompt :: XConfig Layout -> X ()
     -- myUWXPrompt conf = xmonadPromptC (Map.toList myUWXPromptOpts) myUWXPromptConf where
     --   myUWXPromptConf :: XPConfig
