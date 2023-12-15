@@ -84,7 +84,7 @@ myKeys conf = Map.fromList $ concat
       , (xK_h      , windows StackSet.swapDown)
       , (xK_j      , windows StackSet.focusDown)
       , (xK_k      , windows StackSet.focusUp)
-        (xK_l      , windows StackSet.swapUp)
+      , (xK_l      , windows StackSet.swapUp)
       , (xK_comma  , sendMessage $ IncMasterN (-1))
       , (xK_period , sendMessage $ IncMasterN   1 )
       , (xK_d      , spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
