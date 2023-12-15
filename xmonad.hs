@@ -146,7 +146,7 @@ myKeys conf = Map.fromList $ concat
       -- Chat applications
       , ( xK_e  -- [E]lement desktop client (Matrix)
         , Application "element-desktop"
-          mempty [ "--disable-gpu-driver-bug-workarounds" ] mempty
+          mempty mempty mempty
         )
       ]
 
